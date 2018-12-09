@@ -1,0 +1,12 @@
+
+config dogcom
+	option keep_alive2_flag '\xdc'
+	option server '10.0.3.2'
+	option macaddr 'A8:1E:84:05:BB:8F'
+	option interface 'wan'
+	option username '\r\n3115009571'
+	option password '011958'
+	option enabledial '1'
+	option pppoe_flag '\x2f'
+	option enable '1'
+
