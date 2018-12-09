@@ -5,7 +5,7 @@ local macaddr
 m = Map("mac", translate("修改WAN口MAC地址"),translate(" ")..
 "<br />"
 ..[[<br /><strong>]]
-..[[<a href="https://github.com/Twinzo1" target="_blank">]]
+..[[<a href="https://github.com/Twinzo1/openwrt/tree/master/change-macaddr" target="_blank">]]
 ..translate("本项目在GitHub的项目地址")
 ..[[</a>]]
 ..[[</strong><br />]])
