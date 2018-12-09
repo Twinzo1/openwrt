@@ -1,0 +1,5 @@
+
+config mac
+	option ipaddr '192.168.1.111'
+	option macaddr 'a8:1e:84:05:bb:8f'
+
