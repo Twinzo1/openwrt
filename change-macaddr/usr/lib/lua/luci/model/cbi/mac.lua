@@ -37,7 +37,7 @@ localmac.inputtitle =translate ( "点击获取")
 localmac.inputstyle = "apply" 
 localmac.write = function (self, section, value)
 	local localmacc = sys.exec("uci get network.wan.macaddr")
-    	sys.io.popen("uci set mac.@mac[0].macaddr=%s" % localmacc)
+    	sys.exec("uci set mac.@mac[0].macaddr=%s" % localmacc)
 	sys.call("uci commit mac")
 end
 
