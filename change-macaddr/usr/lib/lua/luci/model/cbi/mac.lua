@@ -20,9 +20,10 @@ local ipaddr
 ipaddr = s:option(Value, "ipaddr", translate("本机IP地址"),translate("选择与下方相同的IP地址，方可克隆本机MAC地址"))
 ipaddr.datatype="ipaddr"
 ipaddr.optional = false
-sys.net.arptable(function(entry)
-  ipaddr:value(entry["IP address"])
+luci.sys.net.ipv4_hints(function(e,t)
+ipaddr:value(e,"%s (%s)"%{e,t})
 end)
+
 ipaddr = s:option(Value, "ipaddr", translate("         "))
 ipaddr.template="mac"
 
