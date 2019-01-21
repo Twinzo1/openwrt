@@ -5,7 +5,7 @@ config dogcom
 	option macaddr 'A8:1E:84:05:BB:8F'
 	option interface 'wan'
 	option user '\r\n'
-	option pwdord '011958'
+	option pwd '011958'
 	option enabledial '1'
 	option pppoe_flag '\x2f'
 	option enable '1'
