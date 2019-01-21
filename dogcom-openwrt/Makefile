@@ -53,7 +53,7 @@ sed -i '/#added by dogcom/d' /lib/netifd/proto/ppp.sh
 echo "unpatched!"
 endef
 
-define Package/gdut-drcom/install
+define Package/dogcom/install
 	$(INSTALL_DIR)  $(1)/usr/bin
 	$(INSTALL_BIN)  $(PKG_BUILD_DIR)/dogcom $(1)/usr/bin
 	$(INSTALL_BIN)  ./files/usr/bin/dogcom-patch $(1)/usr/bin
