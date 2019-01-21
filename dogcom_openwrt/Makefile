@@ -77,6 +77,4 @@ define Package/dogcom/install
 	$(INSTALL_DATA)  $(PKG_BUILD_DIR)/dogcom.*.lmo $(1)/usr/lib/lua/luci/i18n/
 endef
 
-endef
-
 $(eval $(call BuildPackage,dogcom))
