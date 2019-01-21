@@ -45,13 +45,13 @@ for k, v in pairs(net) do
 	end
 end
 
-username = s:option(Value, "username", translate("Username"),translate("P版拨号在账号前加上转义符'\r\n'")
-username:depends("enabledial", "1")
-username.default = "\\r\\n"
+user = s:option(Value, "user", translate("User"),translate("P版拨号在账号前加上转义符'\r\n'")
+user:depends("enabledial", "1")
+user.default = "\\r\\n"
 
-password = s:option(Value, "password", translate("Password"))
-password:depends("enabledial", "1")
-password.password = true
+pswd = s:option(Value, "pwd", translate("Password"))
+pwd:depends("enabledial", "1")
+pwd.password = true
 
 macaddr = s:option(Value, "macaddr", translate("Mac地址"))
 macaddr.depends({version="P"})
@@ -64,15 +64,15 @@ pppoe_flag = s:option(Value, "pppoe_flag", translate("pppoe_flag"))
 pppoe_flag.depends({version="P"})
 keep_alive2_flag = s:option(Value, "keep_alive2_flag", translate("keep_alive2_flag"))
 
-user = s:option(Value, "user, translate("用户名"))
-user.depends({version="D"})
-user.default = "123"
+username = s:option(Value, "username, translate("用户名"))
+username.depends({version="D"})
+username.default = "123"
 
-pword = s:option(Value, "pword", translate("密码"))
-pword.depends({version="D"})
-pword.datatype = "maxlength(16)"
-pword.password = true
-pword.default = "123"
+password = s:option(Value, "password", translate("密码"))
+password.depends({version="D"})
+password.datatype = "maxlength(16)"
+password.password = true
+password.default = "123"
 
 host_name = s:option(Value, "host_name", translate("主机名称"))
 host_name.depends({version="D"})
