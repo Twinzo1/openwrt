@@ -1,0 +1,56 @@
+msgid "DRCOM Client"
+msgstr "DRCOM客户端"
+
+msgid "The Client is running"
+msgstr "客户端运行中"
+
+msgid "The Client is not running"
+msgstr "客户端未运行"
+
+msgid "Start client"
+msgstr "开启客户端"
+
+msgid "Please choose the Drcom version"
+msgstr "请选择Drcom版本"
+
+msgid "Version P"
+msgstr "P版"
+
+msgid "Version D"
+msgstr "D版"
+
+msgid "Enable the PPPoE dial"
+msgstr "启用PPPoE拨号"
+
+msgid "Please choose the Dial-up interface.(Usually WAN/wan)"
+msgstr "请选择你的拨号接口.(通常是WAN/wan)"
+
+msgid "Dial-up in version P with an escape character'r\n' before the account"
+msgstr "P版拨号在账号前加上转义符'\r\n'"
+
+msgid "Mac address"
+msgstr "Mac地址"
+
+msgid "Authentication server address"
+msgstr "认证服务器地址"
+
+msgid "host-name"
+msgstr "主机名称"
+
+msgid "Host Operating System"
+msgstr "主机操作系统"
+
+msgid "Host-IP"
+msgstr "主机IP"
+
+msgid "DHCP-Server"
+msgstr "DHCP服务器"
+
+msgid "Binding the MAC-Address"
+msgstr "绑定MAC地址"
+
+msgid "General Setting"
+msgstr "通用设置"
+
+msgid "Running Log"
+msgstr "运行日志"
