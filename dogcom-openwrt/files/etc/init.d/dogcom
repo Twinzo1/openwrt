@@ -8,8 +8,8 @@ start() {
 	tmp_server="server= '$(uci get dogcom.@dogcom[0].server )'"
 	tmp_pppoe_flag="pppoe_flag='$(uci get dogcom.@dogcom[0].pppoe_flag )'"
 	tmp_keep_alive2_flag="keep_alive2_flag='$(uci get dogcom.@dogcom[0].keep_alive2_flag )'"
-	tmp_user="user = '$(uci get dogcom.@dogcom[0].user)'"
-	tmp_pword="pword = '$(uci get dogcom.@dogcom[0].pword)'"			
+	tmp_username="username = '$(uci get dogcom.@dogcom[0].username)'"
+	tmp_password="password = '$(uci get dogcom.@dogcom[0].password)'"			
 	tmp_host_name="host_name = '$(uci get dogcom.@dogcom[0].host_name)'"
 	tmp_host_os="host_os = '$(uci get dogcom.@dogcom[0].host_os)'"
 	tmp_host_ip="host_ip = '$(uci get dogcom.@dogcom[0].host_ip)'"
@@ -26,8 +26,8 @@ start() {
 	version=$(uci get dogcom.@dogcom[0].version 2>/dev/null)
 	enabledial=$(uci get dogcom.@dogcom[0].enabledial 2>/dev/null)
 	ifname=$(uci get network.wan6.ifname 2>/dev/null)
-	username=$(uci get dogcom.@dogcom[0].username 2>/dev/null)
-	password=$(uci get dogcom.@dogcom[0].password 2>/dev/null)
+	user=$(uci get dogcom.@dogcom[0].user 2>/dev/null)
+	pwd=$(uci get dogcom.@dogcom[0].pwd 2>/dev/null)
 	macaddr=$(uci get dogcom.@dogcom[0].macaddr 2>/dev/null)	
 
 	if [ "$enable"x = "1"x ]; then
@@ -39,11 +39,11 @@ start() {
 	fi
 
 	if [ "$enabledial"x != "0"x ]; then
-#		echo "$ifname" "$username" "$password"
+#		echo "$ifname" "$user" "$pwd"
 		uci set network.wan.ifname="$ifname"
 		uci set network.wan.proto="pppoe"
-		uci set network.wan.username="$username"
-		uci set network.wan.password="$password"
+		uci set network.wan.username="$user"
+		uci set network.wan.password="$pwd"
 		uci commit
 	fi
 	
