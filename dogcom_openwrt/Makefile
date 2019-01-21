@@ -58,6 +58,12 @@ define Build/Prepare
 		po2lmo $(po) $(PKG_BUILD_DIR)/$(patsubst %.po,%.lmo,$(notdir $(po)));)
 endef
 
+define Build/Configure
+endef
+
+define Build/Compile
+endef
+
 define Package/dogcom/install
 	$(INSTALL_DIR)  $(1)/usr/bin
 	$(INSTALL_BIN)  $(PKG_BUILD_DIR)/dogcom $(1)/usr/bin
@@ -73,8 +79,11 @@ define Package/dogcom/install
 	$(INSTALL_DIR)   $(1)/usr/lib/lua/luci/model/cbi
 	$(INSTALL_DATA)  ./files/usr/lib/lua/luci/model/cbi/dogcom.lua $(1)/usr/lib/lua/luci/model/cbi
 	$(INSTALL_DATA)  ./files/usr/lib/lua/luci/model/cbi/dogcom_log.lua $(1)/usr/lib/lua/luci/model/cbi
-	$(INSTALL_DIR)   $(1)/usr/lib/lua/luci/i18n
-	$(INSTALL_DATA)  $(PKG_BUILD_DIR)/dogcom.*.lmo $(1)/usr/lib/lua/luci/i18n/
+endef
+
+define Package/$(PKG_NAME)/install 
+	$(INSTALL_DIR)   $(1)/usr/lib/lua/luci/i18n 
+	$(INSTALL_DATA)  $(PKG_BUILD_DIR)/*.lmo $(1)/usr/lib/lua/luci/i18n/ 
 endef
 
 $(eval $(call BuildPackage,dogcom))
