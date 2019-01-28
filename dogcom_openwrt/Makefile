@@ -66,9 +66,9 @@ define Package/dogcom/install
 	$(INSTALL_DATA)  ./files/etc/config/dogcom_log $(1)/etc/config
 	$(INSTALL_DIR)   $(1)/usr/lib/lua/luci/controller
 	$(INSTALL_DATA)  ./files/usr/lib/lua/luci/controller/dogcom/dogcom.lua $(1)/usr/lib/lua/luci/controller
-	$(INSTALL_DIR)   $(1)/usr/lib/lua/luci/model/cbi
-	$(INSTALL_DATA)  ./files/usr/lib/lua/luci/model/cbi/dogcom/dogcom.lua $(1)/usr/lib/lua/luci/model/cbi
-	$(INSTALL_DATA)  ./files/usr/lib/lua/luci/model/cbi/dogcom/dogcom_log.lua $(1)/usr/lib/lua/luci/model/cbi
+	$(INSTALL_DIR)   $(1)/usr/lib/lua/luci/model/cbi/dogcom
+	$(INSTALL_DATA)  ./files/usr/lib/lua/luci/model/cbi/dogcom/dogcom.lua $(1)/usr/lib/lua/luci/model/cbi/dogcom
+	$(INSTALL_DATA)  ./files/usr/lib/lua/luci/model/cbi/dogcom/dogcom_log.lua $(1)/usr/lib/lua/luci/model/cbi/dogcom
 endef
 
 $(eval $(call BuildPackage,dogcom))
