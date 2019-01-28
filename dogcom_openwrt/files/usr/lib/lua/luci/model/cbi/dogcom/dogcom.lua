@@ -45,7 +45,7 @@ for k, v in pairs(net) do
 	end
 end
 
-user = s:option(Value, "user", translate("User"),translate("P版拨号在账号前加上转义符'\r\n'"))
+user = s:option(Value, "user", translate("Username"),translate("P版拨号在账号前加上转义符'\r\n'"))
 user:depends("enabledial", "1")
 user.default = "\\r\\n"
 
