@@ -1,0 +1,12 @@
+
+config dogcom
+	option server '10.0.3.2'
+	option enable '1'
+	option version 'P'
+	option enabledial '1'
+	option interface 'wan'
+	option user '\r\n'
+	option pwd ''
+	option pppoe_flag '\x2f'
+	option keep_alive2_flag '\xdc'
+	option watchdog '0'
