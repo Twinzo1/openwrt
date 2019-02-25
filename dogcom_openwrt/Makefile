@@ -60,7 +60,8 @@ define Package/dogcom/install
 	$(INSTALL_BIN)  ./files/usr/bin/dogcom-unpatch $(1)/usr/bin
 	$(INSTALL_DIR)  $(1)/etc/init.d
 	$(INSTALL_BIN)  ./files/etc/init.d/dogcom $(1)/etc/init.d
-
+	$(INSTALL_BIN)  ./files/etc/init.d/dogcom_log $(1)/etc/init.d
+	
 	$(INSTALL_DIR)   $(1)/etc/config
 	$(INSTALL_DATA)  ./files/etc/config/dogcom $(1)/etc/config
 	$(INSTALL_DATA)  ./files/etc/config/dogcom_log $(1)/etc/config
