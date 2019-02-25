@@ -41,8 +41,8 @@ endef
 define Package/dogcom/postinst
 #!/bin/sh
 echo "post install: patching ppp.sh"
-sed -i '/proto_run_command/i username=echo -e "$username"   #added by dogcom!' /lib/netifd/proto/ppp.sh
-sed -i '/proto_run_command/i password=echo -e "$password"   #added by dogcom!' /lib/netifd/proto/ppp.sh
+sed -i '/proto_run_command/i username=`echo -e "$username"`   #added by dogcom!' /lib/netifd/proto/ppp.sh
+sed -i '/proto_run_command/i password=`echo -e "$password"`   #added by dogcom!' /lib/netifd/proto/ppp.sh
 echo "patched!"
 endef
 
