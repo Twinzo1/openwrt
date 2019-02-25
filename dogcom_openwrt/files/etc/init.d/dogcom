@@ -34,6 +34,7 @@ start() {
 	pwd=$(uci get dogcom.@dogcom[0].pwd 2>/dev/null)
 	macaddr=$(uci get dogcom.@dogcom[0].macaddr 2>/dev/null)	
 	log_clear=$(uci get dogcom.@dogcom[0].log_clear 2>/dev/null)
+	watchdog=$(uci get dogcom.@dogcom[0].watchdog 2>/dev/null)
 
 	if [ "$enable"x = "1"x ]; then
 		/etc/init.d/dogcom enable
@@ -118,6 +119,17 @@ start() {
 	else
 		sed -i '/#自动清除dogcom日志/d' /etc/crontabs/root
 		echo '*/5 * * * * echo "" > /tmp/dogcom.log #自动清除dogcom日志' >> /etc/crontabs/root
+		killall crond
+		/usr/sbin/crond
+	fi
+
+	if [ "$watchdog"x = "0"x ]; then
+		sed -i '/#网络守护/d' /etc/crontabs/root
+		killall crond
+		/usr/sbin/crond
+	else
+		sed -i '/#网络守护/d' /etc/crontabs/root
+		echo "*/$watchdog * * * * /etc/init.d/dogcom_log start #网络守护" >> /etc/crontabs/root
 		killall crond
 		/usr/sbin/crond
 	fi
