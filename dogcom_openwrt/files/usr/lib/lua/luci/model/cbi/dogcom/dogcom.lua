@@ -62,11 +62,9 @@ remote_server.datatype = "ip4addr"
 
 pppoe_flag = s:option(Value, "pppoe_flag", translate("pppoe_flag"))
 pppoe_flag:depends({version="P"})
-pppoe_flag.default = "\\x2f"
 
 keep_alive2_flag = s:option(Value, "keep_alive2_flag", translate("keep_alive2_flag"))
 keep_alive2_flag:depends({version="P"})
-keep_alive2_flag.default = "\\xdc"
 
 username = s:option(Value, "username", translate("用户名"))
 username:depends({version="D"})
@@ -129,9 +127,14 @@ IPDOG.default = "\x01"
 log_clear = s:option(Flag, "log_clear", translate("自动清除日志"),translate("每五分钟清除一次日志"))
 log_clear.default = "1"
 
+watchdog = s:option(Value, "watchdog", translate("网络守护"),translate("每x分钟检测网络连通性，连接失败则自动修改mac地址并重启网络('0'为不启用)"))
+watchdog.default = "0"
+
+
 local apply = luci.http.formvalue("cbi.apply")
 if apply then
     io.popen("/etc/init.d/dogcom restart")
 end
 
 return m
+
