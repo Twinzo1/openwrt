@@ -15,4 +15,5 @@ config dogcom
 	option CONTROLCHECKSTATUS 'x20'
 	option ADAPTERNUM 'x01'
 	option IPDOG 'x01'
+	option watchdog '0'
 
