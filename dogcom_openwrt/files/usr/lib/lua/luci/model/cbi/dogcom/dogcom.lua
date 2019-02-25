@@ -62,9 +62,11 @@ remote_server.datatype = "ip4addr"
 
 pppoe_flag = s:option(Value, "pppoe_flag", translate("pppoe_flag"))
 pppoe_flag:depends({version="P"})
+pppoe_flag.default = "\\x2f"
 
 keep_alive2_flag = s:option(Value, "keep_alive2_flag", translate("keep_alive2_flag"))
 keep_alive2_flag:depends({version="P"})
+keep_alive2_flag.default = "\\xdc"
 
 username = s:option(Value, "username", translate("用户名"))
 username:depends({version="D"})
