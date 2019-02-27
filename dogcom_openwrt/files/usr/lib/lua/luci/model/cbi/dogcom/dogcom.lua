@@ -7,10 +7,27 @@ local sys = require "luci.sys"
 local running = (luci.sys.call("pidof dogcom > /dev/null") == 0)
 if running then	
 
-	m = Map("dogcom", translate("DRCOM客户端"), "<b><font color=\"green\">客户端运行中</font></b>")
+	m = Map("dogcom", translate("DRCOM客户端"),translate("")..
+	"<b><font color=\"green\">客户端运行中</font></b>" ..
+	"<br />"
+	..[[<br /><strong>]]
+	..[[<a href="https://github.com/Twinzo1/openwrt/tree/master/dogcom_openwrt" target="_blank">]]
+	..translate("本项目在GitHub的项目地址")
+	..[[</a>]]
+	..[[</strong><br />]])
 
 else
-	m = Map("dogcom", translate("DRCOM客户端"), "<b><font color=\"red\">客户端未运行</font></b>")
+	m = Map("dogcom", translate("DRCOM客户端"), translate("")..
+	"<b><font color=\"red\">客户端未运行</font></b>"..
+	"<br />"
+	..[[<br /><strong>]]
+	..translate("使用教程:先使用wireshark抓包，然后去分析制作心跳包，填写配置文件。")
+	..[[</a>]]
+	..[[</strong><br />]]
+	..[[<br /><strong>]]
+	..translate("心跳包制作地址:https://drcoms.github.io/drcom-generic/")
+	..[[</a>]]
+	..[[</strong><br />]])
 
 end
 
