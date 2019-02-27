@@ -5,8 +5,7 @@ START=90
 check()
 {
 	tries=0
-	echo --- my_watchdog start ---
-	while [[ $tries -lt 2 ]]
+	while [[ $tries -lt 5 ]]
 	do
         	if /bin/ping -c 1 8.8.8.8 >/dev/null
         	then
