@@ -22,9 +22,9 @@ proxy_a()
 	echo "iptables -t nat -A http_ua_drop -d 172.16.0.0/12 -j RETURN		#防火端口 " >> /etc/firewall.user
 	echo "iptables -t nat -A http_ua_drop -d 224.0.0.0/4 -j RETURN			#防火端口 " >> /etc/firewall.user
 	echo "iptables -t nat -A http_ua_drop -d 240.0.0.0/4 -j RETURN			#防火端口 " >> /etc/firewall.user
-	echo "# 放过发往本地的包								#防火端口 " >> /etc/firewall.user
-	echo "iptables -t nat -A http_ua_drop -p tcp -j REDIRECT --to-port $prot	#防火端口 " >> /etc/firewall.user
-	echo "# 其他情况，重定向到 $port 端口处理						#防火端口 " >> /etc/firewall.user
+	echo "# 放过发往本地的包							 #防火端口 " >> /etc/firewall.user
+	echo "iptables -t nat -A http_ua_drop -p tcp -j REDIRECT --to-port $port  	#防火端口 " >> /etc/firewall.user
+	echo "# 其他情况，重定向到 $port 端口处理					     #防火端口 " >> /etc/firewall.user
 		
 }
 
