@@ -83,7 +83,7 @@ start() {
 		echo $tmp_host_os | tee $curdir -a /tmp/dogcom.log
 		echo $tmp_host_ip | tee $curdir -a /tmp/dogcom.log
 		echo $tmp_dhcp_server | tee $curdir -a /tmp/dogcom.log
-		echo $tmp_mac >> $curdir |tee $curdir -a /tmp/dogcom.log
+		echo $tmp_mac | tee $curdir -a /tmp/dogcom.log
 		echo $tmp_PRIMARY_DNS | tee $curdir -a /tmp/dogcom.log
 		echo $tmp_AUTH_VERSION | tee $curdir -a /tmp/dogcom.log
 		echo $tmp_KEEP_ALIVE_VERSION | tee $curdir -a /tmp/dogcom.log
