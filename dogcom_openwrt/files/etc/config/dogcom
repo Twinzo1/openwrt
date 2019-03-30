@@ -3,7 +3,7 @@ config dogcom
 	option server '10.0.3.2'
 	option enable '0'
 	option version 'P'
-	option enabledial '1'
+	option enabledial '0'
 	option interface 'wan'
 	option user '\r\n'
 	option pwd ''
