@@ -27,11 +27,7 @@ start() {
 	
 	enable=$(uci get dogcom.@dogcom[0].enable 2>/dev/null)
 	version=$(uci get dogcom.@dogcom[0].version 2>/dev/null)
-	enabledial=$(uci get dogcom.@dogcom[0].enabledial 2>/dev/null)
-	ifname=$(uci get network.wan6.ifname 2>/dev/null)
-	user=$(uci get dogcom.@dogcom[0].user 2>/dev/null)
-	pwd=$(uci get dogcom.@dogcom[0].pwd 2>/dev/null)
-	macaddr=$(uci get dogcom.@dogcom[0].macaddr 2>/dev/null)	
+	enabledial=$(uci get dogcom.@dogcom[0].enabledial 2>/dev/null)	
 	log_clear=$(uci get dogcom.@dogcom[0].log_clear 2>/dev/null)
 	watchdog=$(uci get dogcom.@dogcom[0].watchdog 2>/dev/null)
 
@@ -49,6 +45,10 @@ start() {
 	if [ "$version" == "P" ]; then
 		mode='pppoe'
 		echo "当前DRCOM版本为P" >> /tmp/dogcom.log
+		interface=$(uci get dogcom.@dogcom[0].interface 2>/dev/null)
+		user=$(uci get dogcom.@dogcom[0].user 2>/dev/null)
+		pwd=$(uci get dogcom.@dogcom[0].pwd 2>/dev/null)
+		macaddr=$(uci get dogcom.@dogcom[0].macaddr 2>/dev/null)
 		tmp_pppoe_flag="pppoe_flag='$(uci get dogcom.@dogcom[0].pppoe_flag )'"
 		tmp_keep_alive2_flag="keep_alive2_flag='$(uci get dogcom.@dogcom[0].keep_alive2_flag )'"
 		
@@ -93,22 +93,26 @@ start() {
 	fi
 
 	if [ "$enabledial"x = "1"x ]; then
-		uci set network.wan.ifname="$ifname"
-		uci set network.wan.proto="pppoe"
-		uci set network.wan.username="$user"
-		uci set network.wan.password="$pwd"
+#		uci set network.wan.ifname="$ifname"
+#		uci set network.wan.proto="pppoe"
+#		uci set network.wan.username="$user"
+#		uci set network.wan.password="$pwd"
+		/usr/bin/dogcom-patch
+		uci set network.${interface}.proto="pppoe"
+                uci set network.${interface}.username="$user"
+                uci set network.${interface}.password="$pwd"
 		uci commit
+	else 	
+		/usr/bin/dogcom-unpatch
 	fi
 
 	if [ -n "$macaddr" ]; then
-		uci set network.wan.macaddr="$macaddr"
-		uci set network.wan6.macaddr="$macaddr"
-		uci set network.wan_dev.macaddr="$macaddr"
+		uci set network.${interface}.macaddr="$macaddr"
 		uci commit
 	fi
 
 	if [ -n "$macaddr" -o "$enabledial"x = "1"x ]; then
-		/etc/init.d/network restart
+		/etc/init.d/network reload
 	fi
 	
 	if [ "$log_clear"x = "0"x ]; then
