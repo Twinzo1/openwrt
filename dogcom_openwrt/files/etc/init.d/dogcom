@@ -145,3 +145,11 @@ stop()
 		
 	return 0
 }
+
+restart()
+{
+	echo "Dr.COM Client is restartting" >> /tmp/dogcom.log
+	killall dogcom
+	start
+		
+}
