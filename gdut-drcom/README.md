@@ -8,7 +8,7 @@
          \_, /\_,_/\_,_/\__/    \_,_/_/  \__/\___/_/_/_/
         /___/    A third-party drcom client for gdut.
         
-这是一个OpenWrt上适用于广东工业大学的第三方 drcom 客户端（drcom 5.2.1p），现在按理来说应该也是支持其他学校的5.2.1p版的drcom客户，如果有其他学校的同学想要试用或者移植到你们学校，请联系我（chenhaowen01@qq.com）。
+这是一个OpenWrt上适用于广东工业大学的第三方 drcom 客户端（drcom 5.2.1p），现在按理来说应该也是支持其他学校的5.2.1p版的drcom客户，如果有其他学校的同学想要试用或者移植到你们学校，请联系原作者（chenhaowen01@qq.com）。
 
 # compile
 * 使用 OpenWrt SDK（以rampis平台为例）
