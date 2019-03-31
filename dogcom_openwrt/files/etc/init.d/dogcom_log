@@ -30,6 +30,6 @@ start()
 	done
 
 	sto
-	/etc/init.d/network restart
+	/etc/init.d/network reload
 
 }
