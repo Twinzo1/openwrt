@@ -97,13 +97,10 @@ start() {
 #		uci set network.wan.proto="pppoe"
 #		uci set network.wan.username="$user"
 #		uci set network.wan.password="$pwd"
-		/usr/bin/dogcom-patch
 		uci set network.${interface}.proto="pppoe"
-                uci set network.${interface}.username="$user"
+                uci set network.${interface}.username="\r\n$user"
                 uci set network.${interface}.password="$pwd"
 		uci commit
-	else 	
-		/usr/bin/dogcom-unpatch
 	fi
 
 	if [ -n "$macaddr" ]; then
