@@ -98,7 +98,7 @@ start() {
 #		uci set network.wan.username="$user"
 #		uci set network.wan.password="$pwd"
 		uci set network.${interface}.proto="pppoe"
-                uci set network.${interface}.username="\r\n$user"
+                uci set network.${interface}.username="\\r\\n$user"
                 uci set network.${interface}.password="$pwd"
 		uci commit
 	fi
