@@ -5,7 +5,7 @@ config dogcom
 	option version 'P'
 	option enabledial '0'
 	option interface 'wan'
-	option user '\r\n'
+	option user ''
 	option pwd ''
 	option pppoe_flag '\x2f'
 	option keep_alive2_flag '\xdc'
