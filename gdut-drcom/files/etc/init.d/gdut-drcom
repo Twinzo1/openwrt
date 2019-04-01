@@ -21,8 +21,10 @@ start_service() {
 
 
 	if [ "$enable"x = "1"x ]; then
+		/usr/bin/gdut-drcom-patch
 		/etc/init.d/gdut-drcom enable
 	else
+		/usr/bin/gdut-drcom-unpatch
 		/etc/init.d/gdut-drcom disable
 		return
 	fi
@@ -42,12 +44,6 @@ start_service() {
 #		uci set network.wan_dev.macaddr="$macaddr"
 		uci set network.${interface}.macaddr="$macaddr"
 		uci commit
-	fi
-	
-	if [ "$enable"x != "0"x -a "$enable_dial"x != "0"x ]; then
-		/usr/bin/gdut-drcom-patch
-	else
-		/usr/bin/gdut-drcom-unpatch
 	fi
 
 	if [ -n "$macaddr" -o "$enable_dial"x != "0"x ]; then
