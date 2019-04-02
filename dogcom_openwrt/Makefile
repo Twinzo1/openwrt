@@ -38,27 +38,9 @@ define Package/dogcom/description
 	dogcom is drcom-generic implementation in C.
 endef
 
-define Package/dogcom/postinst
-#!/bin/sh
-echo "post install: patching ppp.sh"
-sed -i '/#added by dogcom/d' /lib/netifd/proto/ppp.sh
-sed -i '/proto_run_command/i username=`echo -e "$$username"`   #added by dogcom!' /lib/netifd/proto/ppp.sh
-sed -i '/proto_run_command/i password=`echo -e "$$password"`   #added by dogcom!' /lib/netifd/proto/ppp.sh
-echo "patched!"
-endef
-
-define Package/dogcom/prerm
-#!/bin/sh
-echo "pre remove: unpatching ppp.sh!"
-sed -i '/#added by dogcom/d' /lib/netifd/proto/ppp.sh
-echo "unpatched!"
-endef
-
 define Package/dogcom/install
 	$(INSTALL_DIR)  $(1)/usr/bin
 	$(INSTALL_BIN)  $(PKG_BUILD_DIR)/dogcom $(1)/usr/bin
-	$(INSTALL_BIN)  ./files/usr/bin/dogcom-patch $(1)/usr/bin
-	$(INSTALL_BIN)  ./files/usr/bin/dogcom-unpatch $(1)/usr/bin
 	$(INSTALL_DIR)  $(1)/etc/init.d
 	$(INSTALL_BIN)  ./files/etc/init.d/dogcom $(1)/etc/init.d
 	$(INSTALL_BIN)  ./files/etc/init.d/dogcom_log $(1)/etc/init.d
