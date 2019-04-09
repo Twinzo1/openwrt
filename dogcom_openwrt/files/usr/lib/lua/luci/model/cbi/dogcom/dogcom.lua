@@ -1,6 +1,6 @@
 -- Copyright (C) 2019 Twinzo1 <1282055288@qq.com>
 
-local m, s, o
+local m, s
 local fs = require "nixio.fs"
 local sys = require "luci.sys"
 
