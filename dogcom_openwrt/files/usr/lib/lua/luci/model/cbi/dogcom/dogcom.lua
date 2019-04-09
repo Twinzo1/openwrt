@@ -55,11 +55,13 @@ function escpatch.write()
     luci.sys.call("sed -i '/proto_run_command/i username=`echo -e \"$username\"`  #added by dogcom!' /lib/netifd/proto/ppp.sh")
     luci.sys.call("sed -i '/proto_run_command/i password=`echo -e \"$password\"`  #added by dogcom!' /lib/netifd/proto/ppp.sh")
 end
+escpatch:depends({version="T"})
 
 escunpatch = s:option(Button, "escun", translate("删除"))
 function escunpatch.write()
     luci.sys.call("sed -i '/#added by dogcom/d' /lib/netifd/proto/ppp.sh")
 end
+escunpatch:depends({version="T"})
 
 enabledial = s:option(Flag, "enabledial", translate("启用PPPoE拨号"))
 enabledial:depends({version="P"})
