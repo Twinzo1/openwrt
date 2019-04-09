@@ -36,11 +36,6 @@ s = m:section(TypedSection, "dogcom")
 s.addremove = false
 s.anonymous = true
 
-o = m:section(TypedSection, "dogcom",translate("P版拨号补丁"))
--- 这里的dogcom对应config里面的option
-o.addremove = false
-o.anonymous = true
-
 enable = s:option(Flag, "enable", translate("开启客户端"))
 
 version=s:option(ListValue,"version",translate("请选择Drcom版本"))
@@ -48,14 +43,20 @@ version:value("P",translate("P版"))
 version:value("D",translate("D版"))
 version.default="P"
 
-escpatch = o:option(Button, "esc", translate("添加"))
+escpatch = s:option(Button, "esc", translate("添加"))
+function escpatch.write()
+    luci.sys.call("sed -i '/#added by dogcom/d' /lib/netifd/proto/ppp.sh")
+end
+escpatch.template="dogcom"
+
+escpatch = s:option(Button, "esc", translate("添加"))
 function escpatch.write()
     luci.sys.call("sed -i '/#added by dogcom/d' /lib/netifd/proto/ppp.sh")
     luci.sys.call("sed -i '/proto_run_command/i username=`echo -e \"$username\"`  #added by dogcom!' /lib/netifd/proto/ppp.sh")
     luci.sys.call("sed -i '/proto_run_command/i password=`echo -e \"$password\"`  #added by dogcom!' /lib/netifd/proto/ppp.sh")
 end
 
-escunpatch = o:option(Button, "escun", translate("删除"))
+escunpatch = s:option(Button, "escun", translate("删除"))
 function escunpatch.write()
     luci.sys.call("sed -i '/#added by dogcom/d' /lib/netifd/proto/ppp.sh")
 end
