@@ -35,7 +35,7 @@ start() {
 		/etc/init.d/dogcom enable
 	else
 		/etc/init.d/dogcom disable
-		killall dogcom
+		kill -9 dogcom
 		sed -i '/#自动清除dogcom日志/d' /etc/crontabs/root
 		killall crond
 		/usr/sbin/crond
@@ -142,7 +142,7 @@ start() {
 stop()
 {
 	echo "Dr.COM Client is stopped" >> /tmp/dogcom.log
-	killall dogcom
+	kill -9 dogcom
 		
 	return 0
 }
@@ -150,7 +150,7 @@ stop()
 restart()
 {
 	echo "Dr.COM Client is restartting" >> /tmp/dogcom.log
-	killall dogcom
+	kill -9 dogcom
 	start
 		
 }
