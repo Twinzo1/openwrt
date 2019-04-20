@@ -8,7 +8,7 @@ find(){
 
 get_mac(){
 	local mac=$("find")
-	echo `cat /proc/net/arp | grep "$mac" | cut -b 42-58`
+	 echo `cat /proc/net/arp | grep "192.168.1.230" | sed 's/[ ]*[ ]/ /g' | tr " " "\n" | head -4 | tail -1`
 }
 
 copy(){
