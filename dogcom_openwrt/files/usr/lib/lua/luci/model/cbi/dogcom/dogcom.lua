@@ -39,23 +39,23 @@ s.anonymous = true
 -- Basic Settings --
 s:tab("basic", translate("通用设置"))
 
-enable = s:taboption(Flag, "enable", translate("开启客户端"))
+enable = s:taboption("basic",Flag, "enable", translate("开启客户端"))
 
-version=s:taboption(ListValue,"version",translate("请选择Drcom版本"))
+version=s:taboption("basic",ListValue,"version",translate("请选择Drcom版本"))
 version:value("P",translate("P版"))
 version:value("D",translate("D版"))
 version.default="P"
 
-escpatch = s:taboption(Button, "esc", translate("添加"))
+escpatch = s:taboption("basic",Button, "esc", translate("添加"))
 function escpatch.write()
     luci.sys.call("sed -i '/#added by dogcom/d' /lib/netifd/proto/ppp.sh")
 end
 escpatch.template="dogcom"
 
-enabledial = s:taboption(Flag, "enabledial", translate("启用PPPoE拨号"))
+enabledial = s:taboption("basic",Flag, "enabledial", translate("启用PPPoE拨号"))
 enabledial:depends({version="P"})
 
-interface = s:taboption(ListValue, "interface", translate("Interface"), translate("请选择你的拨号接口. (通常是WAN/wan.)"))
+interface = s:taboption("basic",ListValue, "interface", translate("Interface"), translate("请选择你的拨号接口. (通常是WAN/wan.)"))
 interface:depends("enabledial", "1")
 
 cur = luci.model.uci.cursor()
@@ -71,91 +71,91 @@ for k, v in pairs(net) do
 	end
 end
 
-user = s:taboption(Value, "user", translate("Username"))
+user = s:taboption("basic",Value, "user", translate("Username"))
 user:depends("enabledial", "1")
 
-pwd = s:taboption(Value, "pwd", translate("Password"))
+pwd = s:taboption("basic",Value, "pwd", translate("Password"))
 pwd:depends("enabledial", "1")
 pwd.password = true
 
-macaddr = s:taboption(Value, "macaddr", translate("Mac地址"))
+macaddr = s:taboption("basic",Value, "macaddr", translate("Mac地址"))
 macaddr:depends({version="P"})
 macaddr.datatype="macaddr"
 
-remote_server = s:taboption(Value, "server", translate("认证服务器地址"))
+remote_server = s:taboption("basic",Value, "server", translate("认证服务器地址"))
 remote_server.datatype = "ip4addr"
 
-pppoe_flag = s:taboption(Value, "pppoe_flag", translate("pppoe_flag"))
+pppoe_flag = s:taboption("basic",Value, "pppoe_flag", translate("pppoe_flag"))
 pppoe_flag:depends({version="P"})
 
-keep_alive2_flag = s:taboption(Value, "keep_alive2_flag", translate("keep_alive2_flag"))
+keep_alive2_flag = s:taboption("basic",Value, "keep_alive2_flag", translate("keep_alive2_flag"))
 keep_alive2_flag:depends({version="P"})
 
-username = s:taboption(Value, "username", translate("用户名"))
+username = s:taboption("basic",Value, "username", translate("用户名"))
 username:depends({version="D"})
 username.default = "123"
 
-password = s:taboption(Value, "password", translate("密码"))
+password = s:taboption("basic",Value, "password", translate("密码"))
 password:depends({version="D"})
 password.datatype = "maxlength(16)"
 password.password = true
 password.default = "123"
 
-host_name = s:taboption(Value, "host_name", translate("主机名称"))
+host_name = s:taboption("basic",Value, "host_name", translate("主机名称"))
 host_name:depends({version="D"})
 host_name.datatype = "maxlength(32)"
 host_name.default = "HP"
 
-host_os = s:taboption(Value, "host_os", translate("主机操作系统"))
+host_os = s:taboption("basic",Value, "host_os", translate("主机操作系统"))
 host_os:depends({version="D"})
 host_os.datatype = "maxlength(32)"
 host_os.default = "DOS"
 
-host_ip = s:taboption(Value, "host_ip", translate("主机IP"))
+host_ip = s:taboption("basic",Value, "host_ip", translate("主机IP"))
 host_ip:depends({version="D"})
 host_ip.datatype = "ip4addr"
 host_ip.default = "0.0.0.0"
 
-dhcp_server = s:taboption(Value, "dhcp_server", translate("DHCP服务器"))
+dhcp_server = s:taboption("basic",Value, "dhcp_server", translate("DHCP服务器"))
 dhcp_server:depends({version="D"})
 dhcp_server.datatype = "ip4addr"
 dhcp_server.default = "0.0.0.0"
 
-mac = s:taboption(Value, "mac", translate("绑定MAC地址"))
+mac = s:taboption("basic",Value, "mac", translate("绑定MAC地址"))
 mac:depends({version="D"})
 mac.default = "0xaabbccddeeff"
 
-PRIMARY_DNS = s:taboption(Value, "PRIMARY_DNS", translate("PRIMARY_DNS"))
+PRIMARY_DNS = s:taboption("basic",Value, "PRIMARY_DNS", translate("PRIMARY_DNS"))
 PRIMARY_DNS:depends({version="D"})
 PRIMARY_DNS.default = "114.114.114.114"
 
-AUTH_VERSION = s:taboption(Value, "AUTH_VERSION", translate("AUTH_VERSION"))
+AUTH_VERSION = s:taboption("basic",Value, "AUTH_VERSION", translate("AUTH_VERSION"))
 AUTH_VERSION:depends({version="D"})
 AUTH_VERSION.default = "\x0a\x00"
 
-KEEP_ALIVE_VERSION = s:taboption(Value, "KEEP_ALIVE_VERSION", translate("KEEP_ALIVE_VERSION"))
+KEEP_ALIVE_VERSION = s:taboption("basic",Value, "KEEP_ALIVE_VERSION", translate("KEEP_ALIVE_VERSION"))
 KEEP_ALIVE_VERSION:depends({version="D"})
 KEEP_ALIVE_VERSION.default = "\xdc\x02"
 
-CONTROLCHECKSTATUS = s:taboption(Value, "CONTROLCHECKSTATUS", translate("CONTROLCHECKSTATUS"))
+CONTROLCHECKSTATUS = s:taboption("basic",Value, "CONTROLCHECKSTATUS", translate("CONTROLCHECKSTATUS"))
 CONTROLCHECKSTATUS:depends({version="D"})
 CONTROLCHECKSTATUS.default = "\x20"
 
-ADAPTERNUM = s:taboption(Value, "ADAPTERNUM", translate("ADAPTERNUM"))
+ADAPTERNUM = s:taboption("basic",Value, "ADAPTERNUM", translate("ADAPTERNUM"))
 ADAPTERNUM:depends({version="D"})
 ADAPTERNUM.default = "\x01"
 
-IPDOG = s:taboption(Value, "IPDOG", translate("IPDOG"))
+IPDOG = s:taboption("basic",Value, "IPDOG", translate("IPDOG"))
 IPDOG:depends({version="D"})
 IPDOG.default = "\x01"
 
-log_clear = s:taboption(Flag, "log_clear", translate("自动清除日志"),translate("每五分钟清除一次日志"))
+log_clear = s:taboption("basic",Flag, "log_clear", translate("自动清除日志"),translate("每五分钟清除一次日志"))
 log_clear.default = "1"
 
-watchdog = s:taboption(Value, "watchdog", translate("网络守护"),translate("每x分钟检测网络连通性，连接失败则自动修改mac地址并重启网络('0'为不启用)"))
+watchdog = s:taboption("basic",Value, "watchdog", translate("网络守护"),translate("每x分钟检测网络连通性，连接失败则自动修改mac地址并重启网络('0'为不启用)"))
 watchdog.default = "0"
 
-escpatch = s:taboption(Button, "esc", translate("添加"))
+escpatch = s:taboption("basic",Button, "esc", translate("添加"))
 function escpatch.write()
     luci.sys.call("sed -i '/#added by dogcom/d' /lib/netifd/proto/ppp.sh")
     luci.sys.call("sed -i '/proto_run_command/i username=`echo -e \"$username\"`  #added by dogcom!' /lib/netifd/proto/ppp.sh")
@@ -163,7 +163,7 @@ function escpatch.write()
 end
 escpatch:depends({version="T"})
 
-escunpatch = s:taboption(Button, "escun", translate("删除"))
+escunpatch = s:taboption("basic",Button, "escun", translate("删除"))
 function escunpatch.write()
     luci.sys.call("sed -i '/#added by dogcom/d' /lib/netifd/proto/ppp.sh")
 end
@@ -172,7 +172,7 @@ escunpatch:depends({version="T"})
 -- Generate Configuration --
 s:tab("log", translate("运行日志"))
 
-view_cfg = s:taboption(TextValue, "1", nil)
+view_cfg = s:taboption("log",TextValue, "1", nil)
 	view_cfg.rmempty = false
 	view_cfg.rows = 50
 
