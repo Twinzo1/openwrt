@@ -2,9 +2,9 @@
 #Cpyright by Twizo<1282055288@qq.com>
 
 find(){  
-	echo `uci get mac.@mac[0].ipaddr`
+	echo `logread | grep uhttpd | grep from | tail -1 | tr " " "\n" | tail -1`
 }
-#寻找发出请求的IP
+#脩掳脮脪路垄鲁枚脟毛脟贸碌脛IP
 
 get_mac(){
 	local mac=$("find")
