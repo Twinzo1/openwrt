@@ -1,11 +1,7 @@
 <%
 local fs   = require "nixio.fs"
 local sys  = require "luci.sys"
-%>
-<script type="text/javascript">
-	var  i="<%=cbid%>"
-	s=(i.replace(/esc/, 'unesc'))
-</script>		
+%>		
 <div class="cbi-value"><label class="cbi-value-title" >P版拨号补丁</label>
 <div class="cbi-value-field">
 		<input class="cbi-button cbi-input-button cbi-button-apply" type="submit" name="<%=cbid%>" id="<%=cbid%>" value="添加" />	
