@@ -50,7 +50,7 @@ escpatch = s:taboption("basic",Button, "esc", translate("添加"))
 function escpatch.write()
     luci.sys.call("sed -i '/#added by dogcom/d' /lib/netifd/proto/ppp.sh")
 end
-escpatch.template="dogcom"
+escpatch.template="/dogcom/dogcom"
 
 enabledial = s:taboption("basic",Flag, "enabledial", translate("启用PPPoE拨号"))
 enabledial:depends({version="P"})
