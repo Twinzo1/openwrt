@@ -17,3 +17,7 @@ install
 使用 opkg（推荐）
 
 opkg install dogcom_xxx.ipk
+
+2019-4-22:
+
+修改日志显示界面
