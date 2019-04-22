@@ -157,27 +157,33 @@ watchdog.default = "0"
 
 escpatch = s:taboption("basic",Button, "esc", translate("添加"))
 function escpatch.write()
-    luci.sys.call("sed -i '/#added by dogcom/d' /lib/netifd/proto/ppp.sh")
-    luci.sys.call("sed -i '/proto_run_command/i username=`echo -e \"$username\"`  #added by dogcom!' /lib/netifd/proto/ppp.sh")
-    luci.sys.call("sed -i '/proto_run_command/i password=`echo -e \"$password\"`  #added by dogcom!' /lib/netifd/proto/ppp.sh")
+    	luci.sys.call("sed -i '/#added by dogcom/d' /lib/netifd/proto/ppp.sh")
+    	luci.sys.call("sed -i '/proto_run_command/i username=`echo -e \"$username\"`  #added by dogcom!' /lib/netifd/proto/ppp.sh")
+    	luci.sys.call("sed -i '/proto_run_command/i password=`echo -e \"$password\"`  #added by dogcom!' /lib/netifd/proto/ppp.sh")
 end
 escpatch:depends({version="T"})
 
 escunpatch = s:taboption("basic",Button, "escun", translate("删除"))
 function escunpatch.write()
-    luci.sys.call("sed -i '/#added by dogcom/d' /lib/netifd/proto/ppp.sh")
+   	luci.sys.call("sed -i '/#added by dogcom/d' /lib/netifd/proto/ppp.sh")
 end
 escunpatch:depends({version="T"})
 
 -- Generate Configuration --
-s:tab("log", translate("运行日志"))
 
-view_cfg = s:taboption("log",TextValue, "1", nil)
+s:tab("logger", translate("日志"))
+
+view_cfg = s:taboption("logger",TextValue, "view",nil)
 	view_cfg.rmempty = false
 	view_cfg.rows = 50
 
 	function view_cfg.cfgvalue()
 		return nixio.fs.readfile("/tmp/dogcom.log")or ""
+	end
+
+
+	function view_cfg.validate(self, value)
+        	return nil, translate("It's ok!")
 	end
 
 local apply = luci.http.formvalue("cbi.apply")
@@ -186,4 +192,3 @@ if apply then
 end
 
 return m
-
