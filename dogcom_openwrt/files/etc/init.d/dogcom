@@ -105,6 +105,7 @@ start() {
 
 	if [ -n "$macaddr" ]; then
 		uci set network.${interface}.macaddr="$macaddr"
+		uci set network.wan_dev.macaddr="$macaddr" 2>/dev/null
 		uci commit
 	fi
 
