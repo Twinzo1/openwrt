@@ -16,6 +16,8 @@ sed -i '/proto_run_command/i password=echo -e "$password"' /lib/netifd/proto/ppp
 
 拨号账号要加上\r\n
 
+拨号不成功则需查看/lib/netifd/proto/ppp.sh是否已添加命令成功，要注意符号
+
 4、安装python： 闪存剩余大小低于7.5M，按以下方式安装
 
 opkg update
