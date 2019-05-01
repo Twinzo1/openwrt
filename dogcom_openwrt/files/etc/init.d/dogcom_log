@@ -15,7 +15,12 @@ sto(){
 }
 
 start()
-{
+{	
+	netcheck = $(uci get dogcom.@dogcom[0].netcheck)
+	if [ "$netcheck"x != "1"x ]; then
+		return
+	fi
+	
 	tries=0
 	echo --- my_watchdog start ---
 	while [[ $tries -lt 2 ]]
