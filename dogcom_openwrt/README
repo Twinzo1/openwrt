@@ -21,3 +21,7 @@ opkg install dogcom_xxx.ipk
 2019-4-22:
 
 修改日志显示界面
+
+2019-5-1:
+
+更新dogcom_log，使得安装ipk时间缩短
