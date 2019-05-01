@@ -9,14 +9,14 @@ stochastic(){
 sto(){ 
 	local stom=$("stochastic")
 	uci set network.wan.macaddr="$stom"
-	uci set network.wan_dev.macaddr="$stom"
-	uci set network.wan6.macaddr="$stom"
+	uci set network.wan_dev.macaddr="$stom" 2>/dev/null
+#	uci set network.wan6.macaddr="$stom"
 	uci commit
 }
 
 start()
 {	
-	netcheck = $(uci get dogcom.@dogcom[0].netcheck)
+	netcheck = $(uci get dogcom.@dogcom[0].netcheck 2>/dev/null)
 	if [ "$netcheck"x != "1"x ]; then
 		return
 	fi
