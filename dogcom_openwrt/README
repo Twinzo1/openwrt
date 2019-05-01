@@ -24,4 +24,4 @@ opkg install dogcom_xxx.ipk
 
 2019-5-1:
 
-更新dogcom_log，使得安装ipk时间缩短
+更新/etc/init.d/dogcom_log，缩短ipk安装时间
