@@ -125,10 +125,12 @@ start() {
 	fi
 
 	if [ "$watchdog"x = "0"x ]; then
+		uci set dogcom.@dogcom[0].netcheck = "0"
 		sed -i '/#网络守护/d' /etc/crontabs/root
 		killall crond
 		/usr/sbin/crond
 	else
+		uci set dogcom.@dogcom[0].netcheck = "1"
 		sed -i '/#网络守护/d' /etc/crontabs/root
 		echo "*/$watchdog * * * * /etc/init.d/dogcom_log start #网络守护" >> /etc/crontabs/root
 		killall crond
