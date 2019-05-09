@@ -5,7 +5,7 @@ START=90
 check()
 {
 	tries=0
-	while [[ $tries -lt 5 ]]
+	while [[ $tries -lt 3 ]]
 	do
         	if /bin/ping -c 1 8.8.8.8 >/dev/null
         	then
@@ -14,7 +14,6 @@ check()
            		exit 0
      		fi
         	tries=$((tries+1))
-        	sleep 3
 	done
 	echo "网络连接失败，请检查配置文件" >>  /tmp/dogcom.log
 
