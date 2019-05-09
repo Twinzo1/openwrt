@@ -31,7 +31,7 @@ proxy_a()
 release()
 {
 	release=$(uci get dogcom_proxy.@dogcom_proxy[0].release 2>/dev/null)
-	for  j  in $(seq 1 10)
+	for  j  in $(seq 1 254) //取C类IP地址可用主机最大数
 	do 
 		sto()
 		{
