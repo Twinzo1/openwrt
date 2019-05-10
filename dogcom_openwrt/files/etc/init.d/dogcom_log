@@ -27,13 +27,14 @@ start()
 	do
 	        if /bin/ping -c 1 8.8.8.8 >/dev/null
 		then
+			echo "网络连接正常，持续监测中" >>/tmp/dogcom.log
 	        	echo --- exit ---
 			exit 0
        	 	fi
         	tries=$((tries+1))
         	sleep 3
 	done
-
+	echo "网络连接不正常，开始修改mac地址并重新连接" >>/tmp/dogcom.log
 	sto
 	/etc/init.d/network reload
 
