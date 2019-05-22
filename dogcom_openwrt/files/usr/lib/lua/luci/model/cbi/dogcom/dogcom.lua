@@ -172,19 +172,22 @@ escunpatch:depends({version="T"})
 -- Generate Configuration --
 
 s:tab("logger", translate("日志"))
+s.anonymous=true
+local a="/tmp/dogcom.log"
+dogcom_log=s:taboption("logger",TextValue,"sylogtext")
+dogcom_log.rows=18
+dogcom_log.readonly="readonly"
+dogcom_log.wrap="off"
+function dogcom_log.cfgvalue(s,s)
+sylogtext=""
+if a and nixio.fs.access(a)then
+sylogtext=luci.sys.exec("tail -n 100 %s"%a)
+end
+return sylogtext
+end
+dogcom_log.write=function(s,s,s)
+end
 
-view_cfg = s:taboption("logger",TextValue, "view",nil)
-	view_cfg.rmempty = false
-	view_cfg.rows = 50
-
-	function view_cfg.cfgvalue()
-		return nixio.fs.readfile("/tmp/dogcom.log")or ""
-	end
-
-
-	function view_cfg.validate(self, value)
-        	return nil, translate("It's ok!")
-	end
 
 local apply = luci.http.formvalue("cbi.apply")
 if apply then
