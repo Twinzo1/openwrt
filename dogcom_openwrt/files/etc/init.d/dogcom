@@ -138,7 +138,7 @@ start() {
 
 	echo "Dr.COM Client is startting" >> /tmp/dogcom.log
 	dogcom -m $mode -c /etc/dogcom.conf -l /tmp/dogcom.log -e -d 
-	check
+	check &
 }
 
 stop()
