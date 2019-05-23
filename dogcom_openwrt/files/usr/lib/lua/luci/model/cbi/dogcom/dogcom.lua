@@ -160,12 +160,14 @@ function escpatch.write()
     	luci.sys.call("sed -i '/#added by dogcom/d' /lib/netifd/proto/ppp.sh")
     	luci.sys.call("sed -i '/proto_run_command/i username=`echo -e \"$username\"`  #added by dogcom!' /lib/netifd/proto/ppp.sh")
     	luci.sys.call("sed -i '/proto_run_command/i password=`echo -e \"$password\"`  #added by dogcom!' /lib/netifd/proto/ppp.sh")
+	luci.sys.call("uci commit dogcom")
 end
 escpatch:depends({version="T"})
 
 escunpatch = s:taboption("basic",Button, "escun", translate("删除"))
 function escunpatch.write()
    	luci.sys.call("sed -i '/#added by dogcom/d' /lib/netifd/proto/ppp.sh")
+	luci.sys.call("uci commit dogcom")
 end
 escunpatch:depends({version="T"})
 
