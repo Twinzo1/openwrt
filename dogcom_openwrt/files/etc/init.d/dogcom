@@ -118,7 +118,7 @@ start() {
 		/usr/sbin/crond
 	else
 		sed -i '/#自动清除dogcom日志/d' /etc/crontabs/root
-		echo '*/5 * * * * echo "" > /tmp/dogcom.log #自动清除dogcom日志' >> /etc/crontabs/root
+		echo '*/5 * * * * echo "" > /tmp/dogcom.log & #自动清除dogcom日志' >> /etc/crontabs/root
 		killall crond
 		/usr/sbin/crond
 	fi
@@ -131,7 +131,7 @@ start() {
 	else
 		uci set dogcom.@dogcom[0].netcheck="1"
 		sed -i '/#网络守护/d' /etc/crontabs/root
-		echo "*/$watchdog * * * * /etc/init.d/dogcom_log start #网络守护" >> /etc/crontabs/root
+		echo "*/$watchdog * * * * /etc/init.d/dogcom_log start & #网络守护" >> /etc/crontabs/root
 		killall crond
 		/usr/sbin/crond
 	fi
