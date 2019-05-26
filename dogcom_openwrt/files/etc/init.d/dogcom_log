@@ -6,8 +6,41 @@ stochastic(){
 	echo `dd if=/dev/urandom bs=1 count=32 2>/dev/null | md5sum | cut -b 0-12 | sed 's/\(..\)/\1:/g; s/.$//'`
 }
 
+minus_mac()
+{
+	d_mac=$(uci get dogcom.@dogcom[0].mac 2>/dev/null)
+	l_mac=$(echo "$d_mac"|sed 's/\(.*\)\(.\)$/\2/')
+	ele_mac=("0" "1" "2" "3" "4" "5" "6" "7" "8" "9" "a" "b" "c" "d" "e" "f" "A" "B" "C" "D" "E" "F")
+	for  i  in $(seq 0 21)
+	do
+		if [ "$l_mac" == "${ele_mac[i]}" ]; then
+			if [ "$i" -le "15" ];then
+				if [ "$i" -eq "0" ];then
+					l_mac=${ele_mac[i+1]}
+				else
+					l_mac=${ele_mac[i-1]}
+				fi
+			else
+				if [ "$i" -eq "16" ];then
+					l_mac=${ele_mac[i-7]}
+				else
+					l_mac=${ele_mac[i-1]}
+				fi
+			fi
+		fi
+	done
+	mac=$(echo $d_mac|sed "s/.$/$l_mac/")
+	echo $mac
+}
+
 sto(){ 
+	dogcom_mac=$(uci get dogcom.@dogcom[0].mac 2>/dev/null)
 	local stom=$("stochastic")
+	if [ -n "$dogcom_mac" ]; then
+		stom=$("minus_mac")
+	else
+		stom=$("stochastic")
+	fi
 	uci set network.wan.macaddr="$stom"
 	uci set network.wan_dev.macaddr="$stom" 2>/dev/null
 #	uci set network.wan6.macaddr="$stom"
