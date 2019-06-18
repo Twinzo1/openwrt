@@ -78,9 +78,8 @@ pwd = s:taboption("basic",Value, "pwd", translate("Password"))
 pwd:depends("enabledial", "1")
 pwd.password = true
 
-macaddr = s:taboption("basic",Value, "macaddr", translate("Mac地址"))
-macaddr:depends({version="P"})
-macaddr.datatype="macaddr"
+macaddr = s:taboption("basic",Button, "macaddr", translate("添加"))
+macaddr.template="/dogcom/dogcom_mac"
 
 remote_server = s:taboption("basic",Value, "server", translate("认证服务器地址"))
 remote_server.datatype = "ip4addr"
@@ -170,6 +169,10 @@ function escunpatch.write()
 	luci.sys.call("uci commit dogcom")
 end
 escunpatch:depends({version="T"})
+
+macaddr = s:taboption("basic",Value, "macaddr", translate("Mac地址"))
+macaddr:depends({version="T"})
+macaddr.datatype="macaddr"
 
 -- Generate Configuration --
 
