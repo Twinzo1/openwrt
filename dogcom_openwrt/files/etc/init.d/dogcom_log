@@ -78,3 +78,16 @@ start()
 	/etc/init.d/network reload
 
 }
+
+login_mac()
+{
+	login_ip=$(uci get dogcom.@dogcom[0].login 2>/dev/null)
+	echo `cat /proc/net/arp | grep "$login_ip" | sed 's/[ ]*[ ]/ /g' | tr " " "\n" | head -4 | tail -1`
+}
+
+stop()#克隆mac地址
+{
+	local login_mac=$("login_mac")
+	echo -e "$login_mac\c"
+}
+
