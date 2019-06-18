@@ -13,10 +13,10 @@ sys.call("uci set dogcom.@dogcom[0].login=%s" %{http.getenv("REMOTE_ADDR") or "?
 	<script type="text/javascript">
 	function cmac(){ //获取登陆mac地址
 		var clone = "<%=sys.exec('/etc/init.d/mac stop')%>";
-		document.getElementById("<%=cbid%>c").value = clone;		
+		document.getElementById("<%=cbid%>").value = clone;		
 		}
 	</script>
-  <input type="text" name="<%=cbid%>c" id="<%=cbid%>c" class="cbi-input-text" data-type="macaddr" style="float: left; margin-right: 5px;" size="15" value="<%=mac_addr.mac%>"/>
+  <input type="text" name="<%=cbid%>" id="<%=cbid%>" class="cbi-input-text" data-type="macaddr" style="float: left; margin-right: 5px;" size="15" value="<%=mac_addr.mac%>"/>
 	<input class="cbi-button cbi-input-button cbi-button-apply" type="button" id="clone" value="克隆" onclick="cmac()" />
 </div>
 </div>
