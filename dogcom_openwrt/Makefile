@@ -56,6 +56,7 @@ define Package/dogcom/install
 	$(INSTALL_DATA)  ./files/usr/lib/lua/luci/model/cbi/dogcom/dogcom_proxy.lua $(1)/usr/lib/lua/luci/model/cbi/dogcom
 	$(INSTALL_DIR)   $(1)/usr/lib/lua/luci/view/dogcom
 	$(INSTALL_DATA)  ./files/usr/lib/lua/luci/view/dogcom/dogcom.htm $(1)/usr/lib/lua/luci/view/dogcom
+	$(INSTALL_DATA)  ./files/usr/lib/lua/luci/view/dogcom/dogcom_mac.htm $(1)/usr/lib/lua/luci/view/dogcom
 
 endef
 
