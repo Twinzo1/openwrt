@@ -12,7 +12,7 @@ sys.call("uci set dogcom.@dogcom[0].login=%s" %{http.getenv("REMOTE_ADDR") or "?
 <div class="cbi-value-field">
 	<script type="text/javascript">
 	function cmac(){ //获取登陆mac地址
-		var clone = "<%=sys.exec('/etc/init.d/mac stop')%>";
+		var clone = "<%=sys.exec('/etc/init.d/dogcom_log stop')%>";
 		document.getElementById("<%=cbid%>").value = clone;		
 		}
 	</script>
