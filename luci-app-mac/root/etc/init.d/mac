@@ -1,0 +1,83 @@
+#!/bin/sh /etc/rc.common
+
+#----------------------------------------------
+#Copyright (C) 2019 Twinzo1 <1282055288@qq.com>
+#----------------------------------------------
+START=90
+
+run_random()
+{
+	enable=$(uci get mac.@mac[0].enable 2>/dev/null)
+	minute=$(uci get mac.@mac[0].minute 2>/dev/null)
+	week=$(uci get mac.@mac[0].week 2>/dev/null)
+	hour=$(uci get mac.@mac[0].hour 2>/dev/null)
+
+	if [ "$enable"x != "1"x ]; then
+		sed -i '/#random_mac/d' /etc/crontabs/root
+		killall crond
+		/usr/sbin/crond
+		return
+	fi
+
+	if [ $minute = 0 ] ; then
+        	minute="00"
+	fi
+
+    	if [ $week = 0 ] ; then
+        	week="*"
+	fi
+
+	sed -i '/#random_mac/d' /etc/crontabs/root >/dev/null 2>&1
+	echo "$minute $hour * * $week /etc/init.d/mac restart #random_mac" >> /etc/crontabs/root
+	echo "Auto RANDOM_MAC has started."
+	killall crond
+	/usr/sbin/crond
+}
+
+start() {
+	mac=$(uci get mac.@mac[0].macc 2>/dev/null)
+	wan_mac=$(uci get network.wan.macaddr 2>/dev/null)
+	wan_dev_mac=$(uci get network.wan_dev.macaddr 2>/dev/null)
+	if [ -n $wan_dev_mac ]; then
+		if [ "$mac" != "$wan_dev_mac" ]; then
+		uci set network.wan.macaddr="$mac" 2>/dev/null
+		uci set network.wan_dev.macaddr="$mac" 2>/dev/null
+		uci commit 2>/dev/null
+		/etc/init.d/network reload
+		fi
+	else 
+		if [ "$mac" != "$wan_mac" ]; then
+		uci set network.wan.macaddr="$mac" 2>/dev/null
+		uci set network.wan_dev.macaddr="$mac" 2>/dev/null
+		uci commit 2>/dev/null
+		/etc/init.d/network reload
+		fi
+	fi
+	run_random
+
+}
+stochastic(){
+	echo `dd if=/dev/urandom bs=1 count=32 2>/dev/null | md5sum | cut -b 0-12 | sed 's/\(..\)/\1:/g; s/.$//'`
+}
+
+login_mac()
+{
+	login_ip=$(uci get mac.@mac[0].login 2>/dev/null)
+	echo `cat /proc/net/arp | grep "$login_ip" | sed 's/[ ]*[ ]/ /g' | tr " " "\n" | head -4 | tail -1`
+}
+
+stop()
+{
+	local login_mac=$("login_mac")
+	echo -e "$login_mac\c"
+}
+
+restart()
+{	
+	local stom=$("stochastic")
+	uci set network.wan.macaddr="$stom" 2>/dev/null
+	uci set network.wan_dev.macaddr="$stom" 2>/dev/null
+	uci commit 2>/dev/null
+	/etc/init.d/network reload
+
+}
