@@ -60,18 +60,6 @@ stochastic(){
 	echo `dd if=/dev/urandom bs=1 count=32 2>/dev/null | md5sum | cut -b 0-12 | sed 's/\(..\)/\1:/g; s/.$//'`
 }
 
-login_mac()
-{
-	login_ip=$(uci get mac.@mac[0].login 2>/dev/null)
-	echo `cat /proc/net/arp | grep "$login_ip" | sed 's/[ ]*[ ]/ /g' | tr " " "\n" | head -4 | tail -1`
-}
-
-stop()
-{
-	local login_mac=$("login_mac")
-	echo -e "$login_mac\c"
-}
-
 restart()
 {	
 	local stom=$("stochastic")
