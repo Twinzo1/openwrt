@@ -10,13 +10,36 @@ local mac_addr = {}
 mac_addr.mac = uci:get_first("mac", "mac", "macc")
 mac_addr.current_mac= uci:get("network", "wan", "macaddr")
 mac_addr.current_mac_dev= uci:get("network", "wan_dev", "macaddr")
+mac_addr.language = uci:get("luci", "main", "lang")
+
 luci.ip.neighbors({ family = 4,dest = 'http.getenv("REMOTE_ADDR") or "?"' }, function(n) 
 	mac_addr.login_mac=(n.mac) 
 end)
+
+function translantion(i)
+	local lang = {}
+	if (mac_addr.language == "zh_cn") then
+		lang[0] = "随机"
+		lang[1] = "克隆"
+		lang[2] = "当前Mac地址"
+		lang[3] = "Mac地址"
+	else 
+		lang[0] = "RANDOM"
+		lang[1] = "CLONE"
+		lang[2] = "current Mac address"
+		lang[3] = "Mac address"
+	end
+  		 return lang[i]
+end
+mr = translantion(0)
+mc = translantion(1)
+ml = translantion(2)
+mch = translantion(3)
+
 %>
 
 
-<div class="cbi-value" id="<%=cbid%>"><label class="cbi-value-title" for="<%=cbid%>">当前Mac地址</label>	
+<div class="cbi-value" id="<%=cbid%>"><label class="cbi-value-title" for="<%=cbid%>"><%=ml%></label>	
 <div class="cbi-value-field">
 <script type="text/javascript">
 	function realmac(){  //获取路由器mac地址
@@ -34,7 +57,7 @@ end)
 	   <body onload="realmac()">
 </div>
 </div>
-<div class="cbi-value" ><label class="cbi-value-title" for="<%=cbid%>">Mac地址</label>	
+<div class="cbi-value" ><label class="cbi-value-title" for="<%=cbid%>"><%=mch%></label>	
 <div class="cbi-value-field">
 	<script type="text/javascript">
 	function cmac(){ //获取登陆mac地址
@@ -45,7 +68,7 @@ end)
 	</script>
 
         <input type="text" name="<%=cbid%>c" id="<%=cbid%>c" class="cbi-input-text" data-type="macaddr" style="float: left; margin-right: 5px;" size="15" value="<%=mac_addr.mac%>"/>
-	<input class="cbi-button cbi-input-button cbi-button-apply" type="button" id="clone" value="克隆" onclick="cmac()" />
+	<input class="cbi-button cbi-input-button cbi-button-apply" type="button" id="clone" value="<%=mc%>" onclick="cmac()" />
 
 <script type="text/javascript">
 	function rmac() //生成随机mac地址
@@ -75,7 +98,7 @@ end)
 	}	
 </script>
 	
-	<input class="cbi-button cbi-input-button cbi-button-apply" type="button" id="random" value="随机" onclick="rmac()" />
+	<input class="cbi-button cbi-input-button cbi-button-apply" type="button" id="random" value="<%=mr%>" onclick="rmac()" />
 </div>
 </div>
 
