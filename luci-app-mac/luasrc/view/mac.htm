@@ -11,14 +11,15 @@ mac_addr.mac = uci:get_first("mac", "mac", "macc")
 mac_addr.current_mac= uci:get("network", "wan", "macaddr")
 mac_addr.current_mac_dev= uci:get("network", "wan_dev", "macaddr")
 mac_addr.language = uci:get("luci", "main", "lang")
-
+mac_addr.language_zh_cn = uci:get("luci", "languages", "zh_cn")
+   
 luci.ip.neighbors({ family = 4,dest = 'http.getenv("REMOTE_ADDR") or "?"' }, function(n) 
 	mac_addr.login_mac=(n.mac) 
 end)
 
 function translantion(i)
 	local lang = {}
-	if (mac_addr.language == "zh_cn") then
+	if (mac_addr.language == "zh_cn" or  (mac_addr.language == "auto"and (mac_addr.language_zh_cn ~= "" or mac_addr.language_zh_cn ~= "nil"))) then
 		lang[0] = "随机"
 		lang[1] = "克隆"
 		lang[2] = "当前Mac地址"
