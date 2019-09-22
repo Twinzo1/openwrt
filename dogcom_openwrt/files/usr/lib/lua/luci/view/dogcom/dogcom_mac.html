@@ -5,14 +5,15 @@ local fs   = require "nixio.fs"
 local http  = require "luci.http"
 local ip  = require "luci.ip"
 local sys = require "luci.sys"
-sys.call("uci set dogcom.@dogcom[0].login=%s" %{http.getenv("REMOTE_ADDR") or "?"})
-%>
+luci.ip.neighbors({ family = 4,dest = 'http.getenv("REMOTE_ADDR") or "?"' }, function(n) 
+	mac_addr.login_mac=(n.mac) 
+end)%>
 
 <div class="cbi-value" ><label class="cbi-value-title" for="<%=cbid%>">Mac地址</label>	
 <div class="cbi-value-field">
 	<script type="text/javascript">
 	function cmac(){ //获取登陆mac地址
-		var clone = "<%=sys.exec('/etc/init.d/dogcom_log stop')%>";
+		var clone = "<%=mac_addr.login_mac%>";
 		document.getElementById("<%=cbid%>").value = clone;		
 		}
 	</script>
