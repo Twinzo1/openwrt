@@ -10,42 +10,19 @@ minus_mac()
 {
 	d_mac=$(uci get dogcom.@dogcom[0].mac 2>/dev/null)
 	l_mac=$(echo "$d_mac"|sed 's/\(.*\)\(.\)$/\2/')
-	ele_mac=("0" "1" "2" "3" "4" "5" "6" "7" "8" "9" "a" "b" "c" "d" "e" "f" "A" "B" "C" "D" "E" "F")
-	for  i  in $(seq 0 21)
-	do
-		if [ "$l_mac" == "${ele_mac[i]}" ]; then
-			if [ "$i" -le "15" ];then
-				if [ "$i" -eq "0" ];then
-					l_mac=${ele_mac[i+1]}
-				else
-					l_mac=${ele_mac[i-1]}
-				fi
-			else
-				if [ "$i" -eq "16" ];then
-					l_mac=${ele_mac[i-7]}
-				else
-					l_mac=${ele_mac[i-1]}
-				fi
-			fi
-		fi
-	done
+	l_mac="$l_mac" ^=1/ ##异或求反
 	mac=$(echo $d_mac|sed "s/.$/$l_mac/")
 	echo $mac
 }
 
 sto(){ 
-	dogcom_mac=$(uci get dogcom.@dogcom[0].mac 2>/dev/null)
-	now_mac=$(uci get network.wan.macaddr 2>/dev/null )
-	local stom=$("stochastic")
-	if [ -n "$dogcom_mac" ]; then
-		if [ "$dogcom_mac" -eq "$now_mac" ]; then
-			stom=$("minus_mac")
-		else
-			stom=$("dogcom_mac")
-		fi
-	else
-		stom=$("stochastic")
-	fi
+#	en_JumpTwoMac=$(uci get dogcom.@dogcom[0].en_JumpTwoMac 2>/dev/null)
+	local stom
+#	if [ "$en_JumpTwoMac" -eq "1" ]; then
+#		stom=$("minus_mac")
+#	else
+#		stom=$("stochastic")
+#	fi
 	uci set network.wan.macaddr="$stom"
 	uci set network.wan_dev.macaddr="$stom" 2>/dev/null
 #	uci set network.wan6.macaddr="$stom"
@@ -78,16 +55,3 @@ start()
 	/etc/init.d/network reload
 
 }
-
-login_mac()
-{
-	login_ip=$(uci get dogcom.@dogcom[0].login 2>/dev/null)
-	echo `cat /proc/net/arp | grep "$login_ip" | sed 's/[ ]*[ ]/ /g' | tr " " "\n" | head -4 | tail -1`
-}
-
-stop()#克隆mac地址
-{
-	local login_mac=$("login_mac")
-	echo -e "$login_mac\c"
-}
-
