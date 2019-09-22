@@ -10,7 +10,7 @@ minus_mac()
 {
 	d_mac=$(uci get dogcom.@dogcom[0].mac 2>/dev/null)
 	l_mac=$(echo "$d_mac"|sed 's/\(.*\)\(.\)$/\2/')
-	l_mac="$l_mac" ^=1/ ##异或求反
+	l_mac=0x("$l_mac") ^=0xe ##异或求反
 	mac=$(echo $d_mac|sed "s/.$/$l_mac/")
 	echo $mac
 }
