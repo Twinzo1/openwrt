@@ -7,7 +7,7 @@
 
 include $(TOPDIR)/rules.mk
 
-LUCI_TITLE:=luci-app-mac
+LUCI_TITLE:=Modify Macaddress for luci
 LUCI_DEPENDS:=
 LUCI_PKGARCH:=all
 PKG_VERSION:=1.0
