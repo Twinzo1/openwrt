@@ -17,7 +17,7 @@ s.anonymous = true
 enable = s:option(Flag, "enable", translate("启用防代理"))
 
 release = s:option(DynamicList,"release",translate("设备放行"),
-translate("对这些IP不做任何限制，即是否启用防代理对其没有影响"))
+translate("对这些IP不做任何限制，即是否启用防代理对其没有影响，如果开启了ssr/ss，也将不能科学上网"))
 release.placeholder = "192.168.1.241"
 
 natport = s:option(Value, "natport", translate("端口"),translate("需要重定向的端口，默认80端口"))
