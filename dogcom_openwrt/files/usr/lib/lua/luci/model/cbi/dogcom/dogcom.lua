@@ -78,7 +78,7 @@ pwd = s:taboption("basic",Value, "pwd", translate("Password"))
 pwd:depends("enabledial", "1")
 pwd.password = true
 
-macaddr = s:taboption("basic",Button, "macaddr", translate("添加"))
+macaddr = s:taboption("basic",Value, "macaddr")
 macaddr.template="/dogcom/dogcom_mac"
 
 remote_server = s:taboption("basic",Value, "server", translate("认证服务器地址"))
@@ -153,6 +153,10 @@ log_clear.default = "1"
 
 watchdog = s:taboption("basic",Value, "watchdog", translate("网络守护"),translate("每x分钟检测网络连通性，连接失败则自动修改mac地址并重启网络('0'为不启用)"))
 watchdog.default = "0"
+
+a = s:taboption("basic",Flag, "en_JumpTwoMac", translate("mac变换"),translate("如启用，则mac地址只会在当前mac地址前后变化（据观察，这样的重连率更高）"))
+a:depends({version="P"})
+a.default = "1"
 
 escpatch = s:taboption("basic",Button, "esc", translate("添加"))
 function escpatch.write()
