@@ -9,11 +9,16 @@ stochastic(){
 minus_mac()
 {
 	d_mac=$(uci get dogcom.@dogcom[0].mac 2>/dev/null)
-	l_mac=$(echo "$d_mac"|sed 's/\(.*\)\(.\)$/\2/')
-	l_mac=0x("$l_mac") ^=0xe ##异或求反
-	mac=$(echo $d_mac|sed "s/.$/$l_mac/")
+	l_mac=0x$(echo "$d_mac"|sed 's/\(.*\)\(.\)$/\2/')
+	dec2hex(){
+     		printf "%x" $1
+ 		}
+##十进制转十六进制
+	l_mac=`echo $((0xb^0x1))` ##异或求反
+	mac=$(echo $d_mac|sed "s/.$/$(dec2hex $l_mac)/")
 	echo $mac
 }
+
 
 sto(){ 
 #	en_JumpTwoMac=$(uci get dogcom.@dogcom[0].en_JumpTwoMac 2>/dev/null)
