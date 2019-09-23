@@ -15,7 +15,7 @@ end)%>
 <div class="cbi-value" ><label class="cbi-value-title" for="<%=cbid%>">Mac地址</label>	
 <div class="cbi-value-field">
 	<script type="text/javascript">
-	function dogcom_mac(){  //获取路由器mac地址
+	function dogcom_mac(){  //获取mac地址
 		var mac="<%=mac_addr.mac%>";
 		document.getElementById("<%=cbid%>").value = mac;
 		}
@@ -24,7 +24,7 @@ end)%>
 		document.getElementById("<%=cbid%>").value = clone;		
 		}
 	</script>
-  	<input type="text" name="<%=cbid%>" id="<%=cbid%>" class="cbi-input-text" style="float: left; margin-right: 5px;" size="15" value="<%=mac_addr.mac%>"/>
+  	<input name="<%=cbid%>" id="<%=cbid%>" type="text" class="cbi-input-text" data-type="macaddr" value="<%=mac_addr.mac%>"/>
 	<body onload="dogcom_mac()">
 	<input class="cbi-button cbi-input-button cbi-button-apply" type="button" id="clone" value="克隆" onclick="cmac()" />
 </div>
