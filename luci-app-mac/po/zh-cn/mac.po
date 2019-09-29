@@ -27,3 +27,6 @@ msgstr "项目地址"
 
 msgid "MAC Cloning"
 msgstr "MAC克隆"
+
+msgid "Current Mac address"
+msgstr "当前Mac地址"
