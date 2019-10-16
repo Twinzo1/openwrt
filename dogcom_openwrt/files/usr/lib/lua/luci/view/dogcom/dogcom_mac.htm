@@ -8,7 +8,7 @@ local sys = require "luci.sys"
 local uci = require "luci.model.uci".cursor()
 local mac_addr={}
 mac_addr.mac = uci:get_first("dogcom", "dogcom", "macaddr")
-luci.ip.neighbors({ family = 4,dest = 'http.getenv("REMOTE_ADDR") or "?"' }, function(n) 
+luci.ip.neighbors({ family = 4,dest = http.getenv("REMOTE_ADDR") or "?" }, function(n) 
 	mac_addr.login_mac=(n.mac) 
 end)%>
 
