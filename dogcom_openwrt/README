@@ -16,3 +16,6 @@ opkg install dogcom_xxx.ipk
 
 2019-5-1:
 更新/etc/init.d/dogcom_log，缩短ipk安装时间
+
+2019-1017:
+暂时不存在bug，可以使用
