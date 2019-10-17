@@ -1,0 +1,3 @@
+合并watchcat和luci-app-mac
+
+添加：开机启动修改mac，断网重连，断网重连并修改mac，周期性重连，周期性重连并修改mac
