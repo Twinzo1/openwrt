@@ -11,7 +11,7 @@ LUCI_TITLE:=Luci support for watchpig
 LUCI_DEPENDS:=
 LUCI_PKGARCH:=all
 PKG_VERSION:=1.0
-PKG_RELEASE:=
+PKG_RELEASE:=1
 PKG_LICENSE:=Apache-2.0
 
 include $(TOPDIR)/feeds/luci/luci.mk
