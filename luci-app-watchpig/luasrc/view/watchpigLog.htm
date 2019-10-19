@@ -10,15 +10,15 @@
 				function delHtmlTag(str)
 				{
 					var str0=str.replace(/^(<)(.*)/g,"fasddda");
-						var str1=str0.replace(/<textarea\s(\s*\w*?=".+?")>/g,"fasdddb");
+					var str1=str0.replace(/<textarea\s(\s*\w*?=".+?")>/g,"fasdddb");
 					var str2=str1.replace(/<\/textarea>/g,"fasddda");
 					var str3=str2.replace(/<\/html>/g,"fasdddb");
-						var result1=str3.replace(/<\/?[^>]*>/gim,"");//去掉所有的html标记
+					var result1=str3.replace(/<\/?[^>]*>/gim,"");//去掉所有的html标记
 					var str00=result1.replace(/fasddda/g,"<");
 					var str33=str00.replace(/fasdddb/g,">");
-						var result2=str33.replace(/<\/?[^>]*>/gim,"");//去掉所有的html标记
-						return  result2;//获取文本内容
-						//var reg="<textarea\s(\s*\w*?=".+?")>[\s\S]*?<\/textarea>";匹配textarea标签内容
+					var result2=str33.replace(/<\/?[^>]*>/gim,"");//去掉所有的html标记
+					return  result2;//获取文本内容
+					//var reg="<textarea\s(\s*\w*?=".+?")>[\s\S]*?<\/textarea>";匹配textarea标签内容
 				}
 				function Getkey(str)
 				{
