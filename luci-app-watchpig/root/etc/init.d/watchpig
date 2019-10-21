@@ -161,10 +161,11 @@ start() {
 	reboot_run=$(uci get watchpig.@mac[0].reboot_run 2>/dev/null)
 	logger -t "watchpig" "##################New Log######################"
 	if [ "$reboot_run" != "1" ]; then
-		/etc/init.d/watchpig disable
-		logger -p user.info -t "watchpig(mac)" "“开机自动修改mac地址”事件未启动"
+		sed -i '/#watchpig_mac/d' /etc/rc.local >/dev/null 2>&1
+		logger -p user.info -t "watchpig(mac)" "“开机自动修改mac地址”事件已删除"
 	else
-		/etc/init.d/watchpig enable
+		sed -i '/#watchpig_mac/d' /etc/rc.local >/dev/null 2>&1
+		echo "/usr/bin/watchpig.sh "random_mac" "$interface" #watchpig_mac" >> /etc/rc.local
 		logger -p user.info -t "watchpig(mac)" "已添加开机自动修改mac地址"
 	fi
 	
