@@ -7,8 +7,8 @@ local ip  = require "luci.ip"
 local sys = require "luci.sys"
 local uci = require "luci.model.uci".cursor()
 local mac_addr = {}
-mac_addr.mac = uci:get_first("watchpig", "mac", "macaddr")
-mac_addr.interface= uci:get_first("watchpig", "mac", "interface")
+mac_addr.mac = uci:get_first("mac", "mac", "macaddr")
+mac_addr.interface= uci:get_first("mac", "mac", "interface")
 mac_addr.current_mac= uci:get("network", mac_addr.interface, "macaddr")
 luci.ip.neighbors({ family = 4,dest = http.getenv("REMOTE_ADDR") or "?" }, function(n) 
 	mac_addr.login_mac=(n.mac) 
