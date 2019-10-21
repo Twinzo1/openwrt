@@ -40,9 +40,10 @@ start() {
 	wan_network_mac=$(uci get network.$interface.macaddr 2>/dev/null)
 	reboot_run=$(uci get mac.@mac[0].reboot_run 2>/dev/null)
 	if [ "$reboot_run" != "1" ]; then
-		/etc/init.d/mac disable
+		sed -i '/#random_mac/d' /etc/rc.local >/dev/null 2>&1
 	else
-		/etc/init.d/mac enable
+		sed -i '/#random_mac/d' /etc/rc.local >/dev/null 2>&1
+		echo "/etc/init.d/mac restart #random_mac" >> /etc/rc.local
 	fi
 	
 	if [ "$mac" != "$wan_network_mac" ]; then
