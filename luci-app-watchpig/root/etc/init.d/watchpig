@@ -29,7 +29,7 @@ run_random()
 	fi
 
 	sed -i '/#random_mac/d' /etc/crontabs/root >/dev/null 2>&1
-	echo "$minute $hour * * $week /usr/bin/watchpig.sh "random_mac" "$interface" #random_mac" >> /etc/crontabs/root
+	echo "$minute $hour * * $week /usr/bin/watchpig.sh "random_mac" #random_mac" >> /etc/crontabs/root
 	[ "$week" = "*" ]&& logger -p user.info -t "watchpig(mac)" "已添加定时任务：“将每天在$hour点$minute分修改mac地址”"
 	[ "$week" != "*" ]&& logger -p user.info -t "watchpig(mac)" "已添加定时任务：“将在每个星期的第$week天$hour点$minute分修改mac地址”"
 	logger -p user.info -t "watchpig(mac)" "Auto RANDOM_MAC has started."
