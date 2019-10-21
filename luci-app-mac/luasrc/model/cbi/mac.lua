@@ -48,12 +48,15 @@ pass.datatype = "range(0,59)"
 pass.default=0
 pass:depends({enable="1"})
 
-os = s:option(Value,"macc")
-os.datatype="macaddr"
-os:depends({enable="4"})
+reboot_run=s:option(Flag,"reboot_run",translate("Modify mac at boot"))
+reboot_run.rmempty = true
+reboot_run.default=0
 
 local apply = luci.http.formvalue("cbi.apply")
+local mac=luci.http.formvalue("c_mac")
 if apply then
+    luci.sys.exec("uci set mac.@mac[0].macaddr=%s" % mac)
+    luci.sys.exec("uci commit mac")
     io.popen("/etc/init.d/mac start")
 end
 
