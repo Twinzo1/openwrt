@@ -12,7 +12,7 @@ uci -q batch <<-EOF >/dev/null
 	set watchpig.@mac[0].interface="wan"
 	set watchpig.@mac[0]."$(uci -q get network.wan_dev)"="wan_dev"
 	set watchpig.@mac[0].macaddr="$(uci -q get network.wan.macaddr||uci -q get network.wan_dev.macaddr)"
-	commit mac
+	commit watchpig
     EOF
 rm -f /tmp/luci-indexcache
 exit 0
