@@ -5,6 +5,7 @@
 #----------------------------------------------
 START=90
 
+interface=$(uci get watchpig.@mac[0].interface 2>/dev/null)
 run_random()
 {
 	enable=$(uci get mac.@mac[0].enable 2>/dev/null)
@@ -35,23 +36,20 @@ run_random()
 }
 
 start() {
-	mac=$(uci get mac.@mac[0].macc 2>/dev/null)
-	wan_mac=$(uci get network.wan.macaddr 2>/dev/null)
-	wan_dev_mac=$(uci get network.wan_dev.macaddr 2>/dev/null)
-	if [ -n $wan_dev_mac ]; then
-		if [ "$mac" != "$wan_dev_mac" ]; then
-		uci set network.wan.macaddr="$mac" 2>/dev/null
-		uci set network.wan_dev.macaddr="$mac" 2>/dev/null
+	mac=$(uci get mac.@mac[0].macaddr 2>/dev/null)
+	wan_network_mac=$(uci get network.$interface.macaddr 2>/dev/null)
+	reboot_run=$(uci get mac.@mac[0].reboot_run 2>/dev/null)
+	if [ "$reboot_run" != "1" ]; then
+		/etc/init.d/mac disable
+	else
+		/etc/init.d/mac enable
+	fi
+	
+	if [ "$mac" != "$wan_network_mac" ]; then
+		uci set network.$interface.macaddr="$mac" 2>/dev/null
 		uci commit 2>/dev/null
+		sleep 1
 		/etc/init.d/network reload
-		fi
-	else 
-		if [ "$mac" != "$wan_mac" ]; then
-		uci set network.wan.macaddr="$mac" 2>/dev/null
-		uci set network.wan_dev.macaddr="$mac" 2>/dev/null
-		uci commit 2>/dev/null
-		/etc/init.d/network reload
-		fi
 	fi
 	run_random
 
@@ -63,8 +61,7 @@ stochastic(){
 restart()
 {	
 	local stom=$("stochastic")
-	uci set network.wan.macaddr="$stom" 2>/dev/null
-	uci set network.wan_dev.macaddr="$stom" 2>/dev/null
+	uci set network.$interface.macaddr="$stom" 2>/dev/null
 	uci commit 2>/dev/null
 	/etc/init.d/network reload
 
