@@ -5,9 +5,9 @@
 #----------------------------------------------
 #
 uci -q batch <<-EOF >/dev/null
-	delete ucitrack.@watchpig[0]
+	delete ucitrack.@watchpig[-1]
 	add ucitrack watchpig
-    	set ucitrack.@watchpig[0].init=watchpig
+    	set ucitrack.@watchpig[-1].init=watchpig
     	commit ucitrack
 	set watchpig.@mac[0].interface="wan"
 	set watchpig.@mac[0]."$(uci -q get network.wan_dev)"="wan_dev"
