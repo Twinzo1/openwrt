@@ -15,6 +15,13 @@ mode="$1"
 [ "$mode" = "ping2" ] && mode="ping2"
 [ "$mode" = "ping1" ] && mode="ping1"
 
+lang()
+{
+	language=$(uci get luci.main.lang 2>/dev/null)
+	language_zh_cn=$(uci get luci.languages.zh_cn 2>/dev/null)
+    ([ "$language" == "zh_cn" ]||([ "$language" == "auto" ]&&[ -n "language_zh_cn" ]))&&echo 1
+}
+
 shutdown_now() {
 	local forcedelay="$1"
 
@@ -48,6 +55,7 @@ reconnect(){
 
 watchpig_allways() {
 	local period="$1"; local forcedelay="$2";local custom="${3:-}"
+	local realperiod="$1";
 
 	sleep "$period" && shutdown_now "$forcedelay" && eval "$custom"	
 }
@@ -102,7 +110,9 @@ watchpig_ping() {
 				time_lastcheck_withinternet="$time_now"
 			else
 				time_diff="$((time_now-time_lastcheck_withinternet))"
-				logger -p daemon.info -t "watchpig[$$]" "no internet connectivity for $time_diff seconds. Reseting when reaching $period"
+				[ $("lang") -ne 1 ] && logger -p daemon.info -t "watchpig[$$]" "no internet connectivity for $time_diff seconds. Reseting when reaching $realperiod"
+				[ $("lang") -eq 1 ] && logger -p daemon.info -t "watchpig[$$]" "网络中断达$time_diff秒。达到$realperiod时重置"
+				[ $("lang") -eq 1 ] && logger -p daemon.info -t "watchpig[$$]" "别担心，这可能只是普通的延迟"
 			fi
 		done
 
