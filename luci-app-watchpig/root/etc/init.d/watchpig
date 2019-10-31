@@ -3,7 +3,6 @@
 START=97
 
 PIDFILE="/tmp/run/watchpig"
-#### Luci-app-mact ########
 interface=$(uci get watchpig.@mac[0].interface 2>/dev/null)
 
 lang()
@@ -111,8 +110,8 @@ load_watchpig() {
 			if [ "$pingperiod" -ge 0 ]
 			then
 				[ "$pingperiod" -lt "$period" ] \
-					{([ $("lang") -ne 1 ] && append_string "error" "pingperiod must be less than period" "; " ) || 
-					append_string "error" "“ping周期”必须小于“周期”" "; "}
+					|| (([ $("lang") -ne 1 ] && append_string "error" "pingperiod must be less than period" "; " ) ||
+					append_string "error" "“ping周期”必须小于“周期”" "; " )
 			else
 				[ $("lang") -ne 1 ] && append_string "error" 'pingperiod is not a valid time value (ex: "30"; "4m"; "6h"; "2d")' "; "
 				[ $("lang") -eq 1 ] && append_string "error" '“ping周期”的值是一个无效的值（例如: "30"; "4m"; "6h"; "2d"）' "; "
@@ -124,18 +123,19 @@ load_watchpig() {
 		fi
 	}
 	[ "$forcedelay" -ge 0 ] \
-		{[ $("lang") -ne 1 ] && || append_string "error" "forcedelay must be a integer greater or equal than 0, where 0 means disabled" "; ") || 
+		|| {([ $("lang") -ne 1 ] && append_string "error" "forcedelay must be a integer greater or equal than 0, where 0 means disabled" "; ") ||
 		append_string "error" "“强制延迟”的值必须是一个大于等于0的整数，0表示关闭" "; "}
 
-	[ -n "$error" ] && { (([ $("lang") -ne 1 ] && logger -p user.err -t "watchpig" "reboot program $1 not started - $error") || 
-	logger -p user.err -t "watchpig" "模式$1未能启动 - $error" ); return; } #这句才是核心，append_string不为空，程序返回
+	[ -n "$error" ] && { (([ $("lang") -ne 1 ] && logger -p user.err -t "watchpig" "reboot program $1 not started - $error") ||
+		logger -p user.err -t "watchpig" "模式$1未能启动 - $error" ); return; }
+	#这句才是核心，append_string不为空，程序返回
 
 	if [ "$mode" = "allways" ]
 	then
 		/usr/bin/watchpig.sh "allways" "$period" "$forcedelay" "${custom:-}"&
 		logger -p user.info -t "watchpig" "started task (mode=$mode;period=$period;forcedelay=$forcedelay)"
 		[ $("lang") -ne 1 ] && logger -p user.info -t "watchpig" 'started "Periodic reboot" mode.
-								If you need to restart and modify the Mac, please check the "modify the Mac at boot" option above.'
+		If you need to restart and modify the Mac, please check the "modify the Mac at boot" option above.'
 		[ $("lang") -eq 1 ] && logger -p user.info -t "watchpig" "启动“周期性重启”模式，若需要重启修改mac，请在上面勾选“开机修改mac”选项"
 	elif [ "$mode" = "RanMac" ]; then
 		/usr/bin/watchpig.sh "RanMac" "$period" "$forcedelay" "${custom:-}"&
@@ -150,8 +150,8 @@ load_watchpig() {
 	elif [ "$mode" = "ping1" ]; then
 		/usr/bin/watchpig.sh "ping1" "$period" "$forcedelay" "$pinghosts" "$pingperiod" "${custom:-}"&
 		logger -p user.info -t "watchpig" "started task (mode=$mode;period=$period;pinghosts=$pinghosts;pingperiod=$pingperiod;forcedelay=$forcedelay)"
-		[ $("lang") -ne 1 ] && logger -p user.info -t "watchpig" 'started "Reboot on internet lost" mode. 
-													If you need to restart and modify the Mac, please check the "modify the Mac at boot" option above.'
+		[ $("lang") -ne 1 ] && logger -p user.info -t "watchpig" 'started "Reboot on internet lost" mode.
+		If you need to restart and modify the Mac, please check the "modify the Mac at boot" option above.'
 		[ $("lang") -eq 1 ] && logger -p user.info -t "watchpig" "启动“断网自动重启”模式，若需要重启修改mac，请在上面勾选“开机修改mac”选项"
 	elif [ "$mode" = "ping2" ]; then
 		/usr/bin/watchpig.sh "ping2" "$period" "$forcedelay" "$pinghosts" "$pingperiod" "${custom:-}"&
@@ -194,7 +194,8 @@ stop() {
 	fi
 }
 
-start() {
+start()
+{
 	mac=$(uci get watchpig.@mac[0].macaddr 2>/dev/null)
 	wan_network_mac=$(uci get network.$interface.macaddr 2>/dev/null)
 	reboot_run=$(uci get watchpig.@mac[0].reboot_run 2>/dev/null)
