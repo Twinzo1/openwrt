@@ -10,7 +10,7 @@ m = Map("watchpig", translate("Watchpig"),
 	[[<strong>]]
 	..translate("Copyright statement: Watchpig is a combination of open source software luci-app-mac and watchcat, it is also open source software")
 	..[[</strong><br /><strong>]]
-	..translate("To avoid installation conflicts with them, it is named watchpig")
+	..translate("To avoid installation conflicts with them, it is named Watchpig")
 	..[[</strong><br /><strong>]]
 	..[[<a href="https://github.com/Twinzo1/openwrt/tree/master/luci-app-watchpig" target="_blank">]]
 	..translate("Project address")
@@ -72,12 +72,12 @@ o.anonymous=true
 mode = o:option(ListValue, "mode",
 		translate("Operating mode"))
 mode.default = "allways"
-mode:value("allways", "Periodic reboot")
-mode:value("Noping", "Periodic reconnect")--周期性重连
-mode:value("RanMac", "Periodic Reconnect with modifying mac")--周期性重连并修改mac
-mode:value("ping1", "Reboot on internet connection lost")
-mode:value("ping2", "Reconnect on internet connection lost")--断网重连
-mode:value("ping3", "Reconnect with modifying mac on internet connection lost")--断网重连并修改mac
+mode:value("allways",translate("Periodic reboot"))
+mode:value("Noping",translate("Periodic reconnect"))--周期性重连
+mode:value("RanMac",translate("Periodic Reconnect with modifying mac"))--周期性重连并修改mac
+mode:value("ping1",translate("Reboot on internet connection lost"))
+mode:value("ping2",translate("Reconnect on internet connection lost"))--断网重连
+mode:value("ping3",translate("Reconnect with modifying mac on internet connection lost"))--断网重连并修改mac
 
 forcedelay = o:option(Value, "forcedelay",
 		      translate("Forced reboot/reconnect delay"),
