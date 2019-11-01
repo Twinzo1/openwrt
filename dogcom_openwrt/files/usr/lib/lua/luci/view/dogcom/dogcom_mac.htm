@@ -24,7 +24,7 @@ end)%>
 		document.getElementById("<%=cbid%>").value = clone;		
 		}
 	</script>
-  	<input name="<%=cbid%>" id="<%=cbid%>" type="text" class="cbi-input-text" data-type="macaddr" value="<%=mac_addr.mac%>"/>
+	<input type="text" name="<%=cbid%>" id="<%=cbid%>" class="cbi-input-text" data-type="macaddr" style="float: left; margin-right: 5px;" size="15" value="<%=mac_addr.mac%>"/>
 	<body onload="dogcom_mac()">
 	<input class="cbi-button cbi-input-button cbi-button-apply" type="button" id="clone" value="克隆" onclick="cmac()" />
 </div>
