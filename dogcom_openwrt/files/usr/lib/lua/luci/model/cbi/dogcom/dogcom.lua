@@ -80,6 +80,7 @@ pwd.password = true
 
 macaddr = s:taboption("basic",Value, "macaddr")
 macaddr.template="/dogcom/dogcom_mac"
+macaddr:depends({version="P"})
 
 remote_server = s:taboption("basic",Value, "server", translate("认证服务器地址"))
 remote_server.datatype = "ip4addr"
@@ -196,7 +197,6 @@ return sylogtext
 end
 dogcom_log.write=function(s,s,s)
 end
-
 
 local apply = luci.http.formvalue("cbi.apply")
 if apply then
