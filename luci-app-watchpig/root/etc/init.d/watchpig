@@ -93,81 +93,94 @@ load_watchpig() {
 
 	timetoseconds "$period"
 	period="$seconds"
-	[ "$period" -ge 1 ] \
-		|| {([ $("lang") -ne 1 ] && append_string "error" 'period is not a valid time value (ex: "30"; "4m"; "6h"; "2d")' "; ") ||
-			append_string "error" '“周期”的值是一个无效的值（例如 "30"; "4m"; "6h"; "2d"）' "; "}
-	[ "$mode" = "allways" -o "$mode" = "ping1" -o "$mode" = "ping2" -o "$mode" = "ping3" -o "$mode" = "RanMac" -o "$mode" = "Noping" ] \
-		|| {([ $("lang") -ne 1 ] && append_string "error" "mode must be 'allways' or 'ping1' or 'ping2' or 'ping3' or 'RanMac' or 'Noping'" "; ") ||
-		append_string "error" "模式必须为 'allways'或'ping1'或'ping2'或'ping3'或'RanMac'或'Noping'" "; "}
-	[ -n "$pinghosts" -o "$mode" = "allways" -o "$mode" = "RanMac" -o "$mode" = "Noping" ] \
-		|| {([ $("lang") -ne 1 ] && append_string "error" "pinghosts must be set when in 'ping' mode" "; ") ||
-		append_string "error" "在$mode模式下必须设置“ping主机”" "; "}
-	[ "$mode" = "ping3" -o "$mode" = "ping1" -o "$mode" = "ping2" ] && {
+	if [ "$period" -lt 1 ]; then
+		[ $("lang") -ne 1 ] && append_string "error" 'period is not a valid time value (ex: "30"; "4m"; "6h"; "2d")' "; "
+		[ $("lang") -eq 1 ]	&& append_string "error" '“周期”的值是一个无效的值（例如 "30"; "4m"; "6h"; "2d"）' "; "
+	fi
+	if [ "$mode" = "allways" -o "$mode" = "ping1" -o "$mode" = "ping2" -o "$mode" = "ping3" -o "$mode" = "RanMac" -o "$mode" = "Noping" ]; then
+		echo ok
+	else
+		[ $("lang") -ne 1 ] && append_string "error" "mode must be 'allways' or 'ping1' or 'ping2' or 'ping3' or 'RanMac' or 'Noping'" "; "
+		[ $("lang") -eq 1 ]	&& append_string "error" "模式必须为 'allways'或'ping1'或'ping2'或'ping3'或'RanMac'或'Noping'" "; "
+	fi
+	if [ -n "$pinghosts" -o "$mode" = "allways" -o "$mode" = "RanMac" -o "$mode" = "Noping" ]; then
+		echo ok
+	else
+		[ $("lang") -ne 1 ] && append_string "error" "pinghosts must be set when in 'ping' mode" "; "
+		[ $("lang") -eq 1 ]	&& append_string "error" "在$mode模式下必须设置“ping主机”" "; "
+	fi
+	if [ "$mode" = "ping3" -o "$mode" = "ping1" -o "$mode" = "ping2" ];then
 		if [ -n "$pingperiod" ]
 		then
 			timetoseconds "$pingperiod"
 			pingperiod="$seconds"
 			if [ "$pingperiod" -ge 0 ]
 			then
-				[ "$pingperiod" -lt "$period" ] \
-					|| (([ $("lang") -ne 1 ] && append_string "error" "pingperiod must be less than period" "; " ) ||
-					append_string "error" "“ping周期”必须小于“周期”" "; " )
+				if [ "$pingperiod" -ge "$period" ]; then
+					[ $("lang") -ne 1 ] && append_string "error" "pingperiod must be less than period" "; "
+					[ $("lang") -eq 1 ]	&& append_string "error" "“ping周期”必须小于“周期”" "; "
+				fi
 			else
 				[ $("lang") -ne 1 ] && append_string "error" 'pingperiod is not a valid time value (ex: "30"; "4m"; "6h"; "2d")' "; "
 				[ $("lang") -eq 1 ] && append_string "error" '“ping周期”的值是一个无效的值（例如: "30"; "4m"; "6h"; "2d"）' "; "
 			fi
 		else
 			pingperiod="$((period/20))"
-				[ $("lang") -ne 1 ] && logger -p user.info -t "watchpig" "pingperiod is empty，automatically take 1/20 of period(${period}s)"
-				[ $("lang") -eq 1 ] && logger -p user.info -t "watchpig" "“ping周期”为空，自动取“周期”(${period}s)的二十分之一"
+			[ $("lang") -ne 1 ] && logger -p user.info -t "watchpig" "pingperiod is empty，automatically take 1/20 of period(${period}s)"
+			[ $("lang") -eq 1 ] && logger -p user.info -t "watchpig" "“ping周期”为空，自动取“周期”(${period}s)的二十分之一"
 		fi
-	}
-	[ "$forcedelay" -ge 0 ] \
-		|| {([ $("lang") -ne 1 ] && append_string "error" "forcedelay must be a integer greater or equal than 0, where 0 means disabled" "; ") ||
-		append_string "error" "“强制延迟”的值必须是一个大于等于0的整数，0表示关闭" "; "}
-
-	[ -n "$error" ] && { (([ $("lang") -ne 1 ] && logger -p user.err -t "watchpig" "reboot program $1 not started - $error") ||
-		logger -p user.err -t "watchpig" "模式$1未能启动 - $error" ); return; }
+	fi
+	if [ "$forcedelay" -ge 0 ]; then
+		echo ok
+	else
+		[ $("lang") -ne 1 ] && append_string "error" "forcedelay must be a integer greater or equal than 0, where 0 means disabled" "; "
+		[ $("lang") -eq 1 ]	&& append_string "error" "“强制延迟”的值必须是一个大于等于0的整数，0表示关闭" "; "
+	fi
+	if [ -n "$error" ]; then
+		[ $("lang") -ne 1 ] && logger -p user.err -t "watchpig" "reboot program $1 not started - $error"
+		[ $("lang") -eq 1 ]	&& logger -p user.err -t "watchpig" "模式$1未能启动 - $error" 
+		return
+	fi
 	#这句才是核心，append_string不为空，程序返回
 
 	if [ "$mode" = "allways" ]
 	then
-		/usr/bin/watchpig.sh "allways" "$period" "$forcedelay" "${custom:-}"&
+		/usr/bin/watchpig.sh "allways" "$period" "$forcedelay" "${custom:-}" &
 		logger -p user.info -t "watchpig" "started task (mode=$mode;period=$period;forcedelay=$forcedelay)"
 		[ $("lang") -ne 1 ] && logger -p user.info -t "watchpig" 'started "Periodic reboot" mode.
 		If you need to restart and modify the Mac, please check the "modify the Mac at boot" option above.'
 		[ $("lang") -eq 1 ] && logger -p user.info -t "watchpig" "启动“周期性重启”模式，若需要重启修改mac，请在上面勾选“开机修改mac”选项"
 	elif [ "$mode" = "RanMac" ]; then
-		/usr/bin/watchpig.sh "RanMac" "$period" "$forcedelay" "${custom:-}"&
+		/usr/bin/watchpig.sh "RanMac" "$period" "$forcedelay" "${custom:-}" &
 		logger -p user.info -t "watchpig" "started task (mode=$mode;period=$period;forcedelay=$forcedelay)"
 		[ $("lang") -ne 1 ] && logger -p user.info -t "watchpig" 'started "Periodic reboot and modify mac" mode'
 		[ $("lang") -eq 1 ] && logger -p user.info -t "watchpig" "启动“周期性重连并修改mac地址”模式"
 	elif [ "$mode" = "Noping" ]; then
-		/usr/bin/watchpig.sh "Noping" "$period" "$forcedelay" "${custom:-}"&
+		/usr/bin/watchpig.sh "Noping" "$period" "$forcedelay" "${custom:-}" &
 		logger -p user.info -t "watchpig" "started task (mode=$mode;period=$period;forcedelay=$forcedelay)"
 		[ $("lang") -ne 1 ] && logger -p user.info -t "watchpig" 'started "" mode'
 		[ $("lang") -eq 1 ] && logger -p user.info -t "watchpig" "启动“周期性重连”模式"
 	elif [ "$mode" = "ping1" ]; then
-		/usr/bin/watchpig.sh "ping1" "$period" "$forcedelay" "$pinghosts" "$pingperiod" "${custom:-}"&
+		/usr/bin/watchpig.sh "ping1" "$period" "$forcedelay" "$pinghosts" "$pingperiod" "${custom:-}" &
 		logger -p user.info -t "watchpig" "started task (mode=$mode;period=$period;pinghosts=$pinghosts;pingperiod=$pingperiod;forcedelay=$forcedelay)"
 		[ $("lang") -ne 1 ] && logger -p user.info -t "watchpig" 'started "Reboot on internet lost" mode.
 		If you need to restart and modify the Mac, please check the "modify the Mac at boot" option above.'
 		[ $("lang") -eq 1 ] && logger -p user.info -t "watchpig" "启动“断网自动重启”模式，若需要重启修改mac，请在上面勾选“开机修改mac”选项"
 	elif [ "$mode" = "ping2" ]; then
-		/usr/bin/watchpig.sh "ping2" "$period" "$forcedelay" "$pinghosts" "$pingperiod" "${custom:-}"&
+		/usr/bin/watchpig.sh "ping2" "$period" "$forcedelay" "$pinghosts" "$pingperiod" "${custom:-}" &
 		logger -p user.info -t "watchpig" "started task (mode=$mode;period=$period;pinghosts=$pinghosts;pingperiod=$pingperiod;forcedelay=$forcedelay)"
 		[ $("lang") -ne 1 ] && logger -p user.info -t "watchpig" 'started "Reconnect on internet lost" mode'
 		[ $("lang") -eq 1 ] && logger -p user.info -t "watchpig" "启动“断网自动重连”模式"
 	elif [ "$mode" = "ping3" ]; then
-		/usr/bin/watchpig.sh "ping3" "$period" "$forcedelay" "$pinghosts" "$pingperiod" "${custom:-}"&
+		/usr/bin/watchpig.sh "ping3" "$period" "$forcedelay" "$pinghosts" "$pingperiod" "${custom:-}" &
 		logger -p user.info -t "watchpig" "started task (mode=$mode;period=$period;pinghosts=$pinghosts;pingperiod=$pingperiod;forcedelay=$forcedelay)"
 		[ $("lang") -ne 1 ] && logger -p user.info -t "watchpig" 'started "Reconnect on internet lost and modify mac" mode'
 		[ $("lang") -eq 1 ] && logger -p user.info -t "watchpig" "启动“断网自动重连并修改mac地址”模式"
 	fi
 
 	if [ -n "$custom" ]; then
-	 [ $("lang") -ne 1 ] && logger -p user.info -t "watchpig" "Custom command:$custom"
-	 [ $("lang") -eq 1 ] && logger -p user.info -t "watchpig" "自定义命令：$custom"
+		[ $("lang") -ne 1 ] && logger -p user.info -t "watchpig" "Custom command:$custom"
+		[ $("lang") -eq 1 ] && logger -p user.info -t "watchpig" "自定义命令：$custom"
 	fi
 	echo $! >> "${PIDFILE}.pids"
 }
