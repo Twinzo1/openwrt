@@ -34,7 +34,7 @@ start() {
 		/etc/init.d/dogcom enable
 	else
 		/etc/init.d/dogcom disable
-		kill -9 dogcom
+		killall dogcom
 		sed -i '/#自动清除dogcom日志/d' /etc/crontabs/root
 		killall crond
 		/usr/sbin/crond
