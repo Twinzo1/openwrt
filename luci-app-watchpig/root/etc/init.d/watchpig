@@ -47,7 +47,7 @@ run_random()
     	if [ $week = 0 ] ; then
         	week="*"
 	fi
-	local weekday
+
 	if [ $("lang") -ne 1 ]; then
 		[ $week = 0 ] && weekday="Everyday"
 		[ $week = 1 ] && weekday="every Monday"
@@ -67,16 +67,7 @@ run_random()
 		[ $week = 6 ] && weekday="每个星期六"
 		[ $week = 7 ] && weekday="每个星期天"
 	fi
-
-	[ $week = 0 ] && ([ $("lang") -ne 1 ] && weekday = "Everyday")|| weekday = "每天"
-	[ $week = 1 ] && ([ $("lang") -ne 1 ] && weekday = "every Monday")|| weekday = "每个星期一"
-	[ $week = 2 ] && ([ $("lang") -ne 1 ] && weekday = "every Tuesday")|| weekday = "每个星期二"
-	[ $week = 3 ] && ([ $("lang") -ne 1 ] && weekday = "every Wednesday")|| weekday = "每个星期三"
-	[ $week = 4 ] && ([ $("lang") -ne 1 ] && weekday = "every Thursday")|| weekday = "每个星期四"
-	[ $week = 5 ] && ([ $("lang") -ne 1 ] && weekday = "every Friday")|| weekday = "每个星期五"
-	[ $week = 6 ] && ([ $("lang") -ne 1 ] && weekday = "every Saturday")|| weekday = "每个星期六"
-	[ $week = 7 ] && ([ $("lang") -ne 1 ] && weekday = "every Sunday")|| weekday = "每个星期天"
-
+	
 	sed -i '/#random_mac/d' /etc/crontabs/root >/dev/null 2>&1
 	echo "$minute $hour * * $week /usr/bin/watchpig.sh "random_mac" #random_mac" >> /etc/crontabs/root
 	[ $("lang") -ne 1 ] && logger -p user.info -t "watchpig(mac)" "Add Scheduled task: Auto RANDOM_MAC has started."
