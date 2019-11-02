@@ -6,5 +6,5 @@
 
 如果直接安装ipk，不能正确启动，应该在/model/cbi/watchpig.lua加上
 if apply then
-     io.popen("/etc/init.d/njitclient restart")
+     io.popen("/etc/init.d/watchpig restart")
 end
