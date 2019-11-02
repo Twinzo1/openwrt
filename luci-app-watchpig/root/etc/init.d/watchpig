@@ -35,14 +35,15 @@ run_random()
     	if [ $week = 0 ] ; then
         	week="*"
 	fi
-	[ $week = 0 ] &&(([ $("lang") -ne 1 ] && weekday = "Everyday")|| weekday = "每天")
-	[ $week = 1 ] && (([ $("lang") -ne 1 ] && weekday = "Monday")|| weekday = "星期一")
-	[ $week = 2 ] && (([ $("lang") -ne 1 ] && weekday = "Tuesday")|| weekday = "星期二")
-	[ $week = 3 ] && (([ $("lang") -ne 1 ] && weekday = "Wednesday")|| weekday = "星期三")
-	[ $week = 4 ] && (([ $("lang") -ne 1 ] && weekday = "Thursday")|| weekday = "星期四")
-	[ $week = 5 ] && (([ $("lang") -ne 1 ] && weekday = "Friday")|| weekday = "星期五")
-	[ $week = 6 ] && (([ $("lang") -ne 1 ] && weekday = "Saturday")|| weekday = "星期六")
-	[ $week = 7 ] && (([ $("lang") -ne 1 ] && weekday = "Sunday")|| weekday = "星期天")
+	local weekday
+	[ $week = 0 ] && ([ $("lang") -ne 1 ] && weekday = "Everyday")|| weekday = "每天"
+	[ $week = 1 ] && ([ $("lang") -ne 1 ] && weekday = "every Monday")|| weekday = "每个星期一"
+	[ $week = 2 ] && ([ $("lang") -ne 1 ] && weekday = "every Tuesday")|| weekday = "每个星期二"
+	[ $week = 3 ] && ([ $("lang") -ne 1 ] && weekday = "every Wednesday")|| weekday = "每个星期三"
+	[ $week = 4 ] && ([ $("lang") -ne 1 ] && weekday = "every Thursday")|| weekday = "每个星期四"
+	[ $week = 5 ] && ([ $("lang") -ne 1 ] && weekday = "every Friday")|| weekday = "每个星期五"
+	[ $week = 6 ] && ([ $("lang") -ne 1 ] && weekday = "every Saturday")|| weekday = "每个星期六"
+	[ $week = 7 ] && ([ $("lang") -ne 1 ] && weekday = "every Sunday")|| weekday = "每个星期天"
 
 	sed -i '/#random_mac/d' /etc/crontabs/root >/dev/null 2>&1
 	echo "$minute $hour * * $week /usr/bin/watchpig.sh "random_mac" #random_mac" >> /etc/crontabs/root
