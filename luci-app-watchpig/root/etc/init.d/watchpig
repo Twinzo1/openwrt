@@ -9,8 +9,20 @@ lang()
 {
 	language=$(uci get luci.main.lang 2>/dev/null)
 	language_zh_cn=$(uci get luci.languages.zh_cn 2>/dev/null)
-    ([ "$language" == "zh_cn" ]||([ "$language" == "auto" ]&&[ -n "language_zh_cn" ]))&&echo 1
+	language_internal=$(uci get luci.languages 2>/dev/null)
+        	if [ "$language" == "zh_cn" ]; then
+		echo 1
+	elif [ "$language" == "auto" -a -n "language_zh_cn" ]; then
+		if [ "$language_internal" == "internal" ]; then 
+			echo 0
+		else 
+			echo 1
+		fi
+	else
+		echo 0
+	fi
 }
+
 ##添加中英文日志支持
 run_random()
 {
@@ -36,6 +48,26 @@ run_random()
         	week="*"
 	fi
 	local weekday
+	if [ $("lang") -ne 1 ]; then
+		[ $week = 0 ] && weekday="Everyday"
+		[ $week = 1 ] && weekday="every Monday"
+		[ $week = 2 ] && weekday="every Tuesday"
+		[ $week = 3 ] && weekday="every Wednesday"
+		[ $week = 4 ] && weekday="every Thursday"
+		[ $week = 5 ] && weekday="every Friday"
+		[ $week = 6 ] && weekday="every Saturday"
+		[ $week = 7 ] && weekday="every Sunday"	
+	else
+		[ $week = 0 ] && weekday="每天"
+		[ $week = 1 ] && weekday="每个星期一"
+		[ $week = 2 ] && weekday="每个星期二"
+		[ $week = 3 ] && weekday="每个星期三"
+		[ $week = 4 ] && weekday="每个星期四"
+		[ $week = 5 ] && weekday="每个星期五"
+		[ $week = 6 ] && weekday="每个星期六"
+		[ $week = 7 ] && weekday="每个星期天"
+	fi
+
 	[ $week = 0 ] && ([ $("lang") -ne 1 ] && weekday = "Everyday")|| weekday = "每天"
 	[ $week = 1 ] && ([ $("lang") -ne 1 ] && weekday = "every Monday")|| weekday = "每个星期一"
 	[ $week = 2 ] && ([ $("lang") -ne 1 ] && weekday = "every Tuesday")|| weekday = "每个星期二"
