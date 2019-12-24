@@ -1,6 +1,6 @@
 ##### 请到 https://github.com/Twinzo1/lede/tree/master/package/Twinzo/dogcom 查看
 
-持续更新界面，可能会出现bug
+~~持续更新界面，可能会出现bug
 
 ##### compile
 
