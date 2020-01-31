@@ -4,3 +4,7 @@
 Some little function of openwrt
 
 一些应用在openwrt上的小功能
+
+2020-1-31：
+
+优化dogcom页面，更新luci-app-idns和luci-app-mac，解决权限问题
