@@ -15,6 +15,8 @@ touch $VACATIONBAK
 touch $OVERIIMEBAK
 mode="$1"
 fun="$2"
+line=`wc -l $LOGFILE`
+[ $line -ge 1000 ] && echo "日志超过一千行，清除日志" > $LOGFILE
 
 add_cron(){
 	sed -i "/#$4/d" /etc/crontabs/root
@@ -142,7 +144,7 @@ remote_control(){ #远程控制
 			uci set oafControl.@global[0].global_enabled="1"
 			/etc/init.d/oafControl restart
 		fi
-	else
+	elif [ "$status" -eq 0 ]; then
 		if [ "$status" -ne "$global_enable" ]; then #不同则stop并改变启动状态为已禁止
 			echo "`date '+%A %Y-%m-%d %H:%M:%S'`：远程关闭中" >> $LOGFILE
 			uci set oafControl.@global[0].global_enabled="0"
@@ -151,6 +153,8 @@ remote_control(){ #远程控制
 			echo "`date '+%A %Y-%m-%d %H:%M:%S'`：远程无命令" >> $LOGFILE
 			return
 		fi
+	else
+		echo "`date '+%A %Y-%m-%d %H:%M:%S'`：远程无命令" >> $LOGFILE
 	fi
 }
 
