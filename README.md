@@ -8,3 +8,7 @@ Some little function of openwrt
 2020-1-31：
 
 优化dogcom页面，更新luci-app-idns和luci-app-mac，解决权限问题
+
+2020-3-28：
+
+有些已经已经在我的lede源码中更新（优先更新），此处的可能会晚很久
