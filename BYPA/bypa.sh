@@ -1,6 +1,7 @@
 #!/bin/sh
-
-LOGFILE="/tmp/bypa.log"
+# 定时命令
+# */1 * * * * /usr/bin/bypa.sh check
+LOGFILE="/tmp/log/bypa.log"
 # 获取旁路由mac地址，必填
 # BYP_MAC=`uci get byp.@bpy[0].macaddr 2>/dev/null`
 BYP_MAC=""
@@ -40,12 +41,14 @@ byp_online()
 	do
         	if /bin/ping -c 1 $BYP_IP4 >/dev/null
         	then
-                al_online=`uci show | grep $BYP_IP4`
+                	al_online=`uci show | grep $BYP_IP4`
             		[ -n "$al_online" ] || { add_dhcp && echo "旁路由上线，开始调整dhcp选项" >>  $LOG_FILE}
                 exit 0
      		fi
         	tries=$((tries+1))
 	done
 	echo "旁路由下线，开始调整dhcp选项" >>  $LOG_FILE
-  del_dhcp
+  	del_dhcp
 }
+
+[ "$1" = "check" ] && byp_online || echo "参数错误" >>  $LOG_FILE
