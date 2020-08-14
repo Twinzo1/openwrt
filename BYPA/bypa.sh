@@ -12,7 +12,7 @@ BYP_IP4=""
 [ -z $BYP_IP4 ] && BYP_IP4=`cat /proc/net/arp | grep -i "$BYP_MAC" | awk -F " " '{print $1}' 2>/dev/null`
 
 # 获取旁路由ipv6地址
-BYP_IP6=`ip -6 neighbor show | grep -i "$BYP_IP4" | sed -n '1p' | awk -F " " '{print $1}' 2>/dev/null`
+BYP_IP6=`ip -6 neighbor show | grep -i "$BYP_MAC" | sed -n '1p' | awk -F " " '{print $1}' 2>/dev/null`
 
 # 添加dhcp_option
 add_dhcp()
