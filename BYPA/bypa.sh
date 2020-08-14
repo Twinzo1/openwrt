@@ -1,8 +1,9 @@
 #!/bin/sh
 # 定时命令
 # */1 * * * * /usr/bin/bypa.sh check
+
 LOGFILE="/tmp/log/bypa.log"
-# 获取旁路由mac地址，必填
+# 获取旁路由mac地址，必填(或填ipv4地址)
 # BYP_MAC=`uci get byp.@bpy[0].macaddr 2>/dev/null`
 BYP_MAC=""
 
@@ -10,6 +11,9 @@ BYP_MAC=""
 # BYP_IP4=`uci get byp.@bpy[0].ipaddr 2>/dev/null`
 BYP_IP4=""
 [ -z $BYP_IP4 ] && BYP_IP4=`cat /proc/net/arp | grep -i "$BYP_MAC" | awk -F " " '{print $1}' 2>/dev/null`
+
+# 通过ipv4地址获取mac
+[ -z "$BYP_MAC" ] && BYP_MAC=`cat /proc/net/arp | grep -w "$BYP_IP4" | awk -F " " '{print $4}'`
 
 # 获取旁路由ipv6地址
 BYP_IP6=`ip -6 neighbor show | grep -i "$BYP_MAC" | sed -n '1p' | awk -F " " '{print $1}' 2>/dev/null`
