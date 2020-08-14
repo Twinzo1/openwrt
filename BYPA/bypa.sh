@@ -21,7 +21,7 @@ add_dhcp()
   uci add_list dhcp.lan.dhcp_option= "6,$BYP_IP4"
   uci add_list dhcp.lan.dns="$BYP_IP6"
   uci commit dhcp
-  /etc/init.d/network restart
+  /etc/init.d/network reload
 }
 
 # 删除dhcp_option
@@ -31,7 +31,7 @@ del_dhcp()
   uci del_list dhcp.lan.dhcp_option= "6,$BYP_IP4" 2>/dev/null
   uci del_list dhcp.lan.dns="$BYP_IP6"
   uci commit dhcp
-  /etc/init.d/network restart
+  /etc/init.d/network reload
 }
 # 检测旁路由是否上线
 byp_online()
@@ -41,7 +41,7 @@ byp_online()
 	do
         	if /bin/ping -c 1 $BYP_IP4 >/dev/null
         	then
-                	al_online=`uci show | grep $BYP_IP4`
+                	al_online=`uci show | grep "3,$BYP_IP4"`
             		[ -n "$al_online" ] || { add_dhcp && echo "旁路由上线，开始调整dhcp选项" >>  $LOG_FILE}
                 exit 0
      		fi
