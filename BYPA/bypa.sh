@@ -10,7 +10,7 @@ BYP_MAC=""
 # 获取旁路由ipv4地址
 # BYP_IP4=`uci get byp.@bpy[0].ipaddr 2>/dev/null`
 BYP_IP4=""
-[ -z $BYP_IP4 ] && BYP_IP4=`cat /proc/net/arp | grep -i "$BYP_MAC" | awk -F " " '{print $1}' 2>/dev/null`
+[ -z "$BYP_IP4" ] && BYP_IP4=`cat /proc/net/arp | grep -i "$BYP_MAC" | awk -F " " '{print $1}' 2>/dev/null`
 
 # 通过ipv4地址获取mac
 [ -z "$BYP_MAC" ] && BYP_MAC=`cat /proc/net/arp | grep -w "$BYP_IP4" | awk -F " " '{print $4}'`
@@ -21,19 +21,23 @@ BYP_IP6=`ip -6 neighbor show | grep -i "$BYP_MAC" | sed -n '1p' | awk -F " " '{p
 # 添加dhcp_option
 add_dhcp()
 {
-  uci add_list dhcp.lan.dhcp_option= "3,$BYP_IP4"
-  uci add_list dhcp.lan.dhcp_option= "6,$BYP_IP4"
+  uci del_list dhcp.lan.dhcp_option="3,$BYP_IP4"
+  uci del_list dhcp.lan.dhcp_option="6,$BYP_IP4"
+  uci set dhcp.lan.dns=""
+  uci add_list dhcp.lan.dhcp_option="3,$BYP_IP4"
+  uci add_list dhcp.lan.dhcp_option="6,$BYP_IP4"
   uci add_list dhcp.lan.dns="$BYP_IP6"
   uci commit dhcp
+  echo "旁路由上线，开始调整dhcp选项" >>  $LOGFILE
   /etc/init.d/network reload
 }
 
 # 删除dhcp_option
 del_dhcp()
 {
-  uci del_list dhcp.lan.dhcp_option= "3,$BYP_IP4" 2>/dev/null
-  uci del_list dhcp.lan.dhcp_option= "6,$BYP_IP4" 2>/dev/null
-  uci del_list dhcp.lan.dns="$BYP_IP6"
+  uci del_list dhcp.lan.dhcp_option="3,$BYP_IP4" 2>/dev/null
+  uci del_list dhcp.lan.dhcp_option="6,$BYP_IP4" 2>/dev/null
+  uci set dhcp.lan.dns=""
   uci commit dhcp
   /etc/init.d/network reload
 }
@@ -45,14 +49,16 @@ byp_online()
 	do
         	if /bin/ping -c 1 $BYP_IP4 >/dev/null
         	then
-                	al_online=`uci show | grep "3,$BYP_IP4"`
-            		[ -n "$al_online" ] || { add_dhcp && echo "旁路由上线，开始调整dhcp选项" >>  $LOG_FILE}
+                	al_online=`uci show | grep dhcp.lan.dhcp_option | grep "3,$BYP_IP4"`	
+			[ -n "$al_online" ] || add_dhcp
+			al_exit=`uci show | grep dhcp.lan.dns | grep "$BYP_IP6"`
+			[ -z "$al_exit" ] && add_dhcp
                 exit 0
      		fi
         	tries=$((tries+1))
 	done
-	echo "旁路由下线，开始调整dhcp选项" >>  $LOG_FILE
+	echo "旁路由下线，开始调整dhcp选项" >>  $LOGFILE
   	del_dhcp
 }
 
-[ "$1" = "check" ] && byp_online || echo "参数错误" >>  $LOG_FILE
+[ "$1" = "check" ] && byp_online || echo "参数错误" >>  $LOGFILE
