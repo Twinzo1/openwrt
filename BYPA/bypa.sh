@@ -4,11 +4,11 @@
 
 LOGFILE="/tmp/log/bypa.log"
 # 获取旁路由mac地址，必填(或填ipv4地址)
-# BYP_MAC=`uci get byp.@bpy[0].macaddr 2>/dev/null`
+# BYP_MAC=`uci get bypa.@bypa[0].macaddr 2>/dev/null`
 BYP_MAC=""
 
 # 获取旁路由ipv4地址
-# BYP_IP4=`uci get byp.@bpy[0].ipaddr 2>/dev/null`
+# BYP_IP4=`uci get bypa.@bypa[0].ipaddr 2>/dev/null`
 BYP_IP4=""
 [ -z "$BYP_IP4" ] && BYP_IP4=`cat /proc/net/arp | grep -i "$BYP_MAC" | awk -F " " '{print $1}' 2>/dev/null`
 
@@ -18,14 +18,19 @@ BYP_IP4=""
 # 获取旁路由ipv6地址
 BYP_IP6=`ip -6 neighbor show | grep -i "$BYP_MAC" | sed -n '1p' | awk -F " " '{print $1}' 2>/dev/null`
 
+# 解锁网易云pac地址
+BYP_PAC=`uci get `
+
 # 添加dhcp_option
 add_dhcp()
 {
   uci del_list dhcp.lan.dhcp_option="3,$BYP_IP4"
   uci del_list dhcp.lan.dhcp_option="6,$BYP_IP4"
+  uci del_list dhcp.lan.dhcp_option="252,$BYP_PAC"
   uci set dhcp.lan.dns=""
   uci add_list dhcp.lan.dhcp_option="3,$BYP_IP4"
   uci add_list dhcp.lan.dhcp_option="6,$BYP_IP4"
+  uci add_list dhcp.lan.dhcp_option="252,$BYP_PAC"
   uci add_list dhcp.lan.dns="$BYP_IP6"
   uci commit dhcp
   echo "旁路由上线，开始调整dhcp选项" >>  $LOGFILE
@@ -37,6 +42,7 @@ del_dhcp()
 {
   uci del_list dhcp.lan.dhcp_option="3,$BYP_IP4" 2>/dev/null
   uci del_list dhcp.lan.dhcp_option="6,$BYP_IP4" 2>/dev/null
+  uci del_list dhcp.lan.dhcp_option="252,$BYP_PAC" 2>/dev/null
   uci set dhcp.lan.dns=""
   uci commit dhcp
   /etc/init.d/network reload
