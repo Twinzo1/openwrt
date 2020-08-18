@@ -19,18 +19,18 @@ BYP_IP4=""
 BYP_IP6=`ip -6 neighbor show | grep -i "$BYP_MAC" | sed -n '1p' | awk -F " " '{print $1}' 2>/dev/null`
 
 # 解锁网易云pac地址
-BYP_PAC=`uci get `
+BYP_PAC=`uci get bypa.@bypa[0].pac 2>/dev/null`
 
 # 添加dhcp_option
 add_dhcp()
 {
   uci del_list dhcp.lan.dhcp_option="3,$BYP_IP4"
   uci del_list dhcp.lan.dhcp_option="6,$BYP_IP4"
-  uci del_list dhcp.lan.dhcp_option="252,$BYP_PAC"
+  uci del_list dhcp.lan.dhcp_option="252,$BYP_PAC" 2>/dev/null
   uci set dhcp.lan.dns=""
   uci add_list dhcp.lan.dhcp_option="3,$BYP_IP4"
   uci add_list dhcp.lan.dhcp_option="6,$BYP_IP4"
-  uci add_list dhcp.lan.dhcp_option="252,$BYP_PAC"
+  [ -n "$BYP_PAC" ] && uci add_list dhcp.lan.dhcp_option="252,$BYP_PAC"
   uci add_list dhcp.lan.dns="$BYP_IP6"
   uci commit dhcp
   echo "旁路由上线，开始调整dhcp选项" >>  $LOGFILE
@@ -56,9 +56,8 @@ byp_online()
         	if /bin/ping -c 1 $BYP_IP4 >/dev/null
         	then
                 	al_online=`uci show | grep dhcp.lan.dhcp_option | grep "3,$BYP_IP4"`	
-			[ -n "$al_online" ] || add_dhcp
 			al_exit=`uci show | grep dhcp.lan.dns | grep "$BYP_IP6"`
-			[ -z "$al_exit" ] && add_dhcp
+			[ -z "$al_exit" -o -z "$al_online" ] && add_dhcp
                 exit 0
      		fi
         	tries=$((tries+1))
