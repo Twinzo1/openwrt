@@ -1,3 +1,5 @@
+![Twinzo1’s github stats](https://github-readme-stats.vercel.app/api?username=Twinzo1&show_icons=true&theme=merko)
+
 # openwrt
 ##### 将除 "p版"、“watchpig” 之外的所有功能移植我的lede源码
 ##### https://github.com/Twinzo1/lede/tree/master/package/Twinzo
