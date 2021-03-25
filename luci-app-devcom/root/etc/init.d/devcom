@@ -1,0 +1,82 @@
+#!/bin/sh /etc/rc.common
+# Copyright (C) 2007-2012 OpenWrt.org
+
+START=90
+
+CONFIGFILE_COMMENTS="/tmp/dhcp_comments.conf"
+WRTBWMON_USER="/etc/config/wrtbwmon.user"
+TEMFILE="/tmp/devcom.tmp"
+NAME="devcom"
+
+cappend() {
+	local value="$1"
+
+	echo "${value#--}" >> $CONFIGFILE_COMMENTS
+}
+
+wappend() {
+	local value="$1"
+
+	echo "${value#--}" >> $TEMFILE
+}
+
+get_config(){
+	local var
+	local num="$3"
+	var=$(uci get $NAME.@$1[$num].$2 2>/dev/null)
+	echo ${var}
+}
+
+uci_get_by_type() {
+	local total=`uci show 2>/dev/null | grep $NAME.@"$1" | grep -w "=$1" | sed '/^$/!h;$!d;g' | awk -F "[" '{print $2}' | awk -F "]" '{print $1}'`
+	echo "$total"
+}
+
+config_add_host(){
+	local cfg="$1"
+	total=`uci_get_by_type $cfg`
+	while [[ $total -ge 0 ]]
+	do
+		comments=`get_config "$cfg" comments "$total"`
+		ips=`get_config "$cfg" ip "$total"`
+		macs=`get_config "$cfg" mac "$total"`
+		wrts=`get_config "$cfg" wrt "$total"`
+		[ -z "$comments" ] && break
+		if [ -n "$macs" -o -n "$ips" ]; then
+			[ -z "$macs" ] && macs="-"
+			[ -z "$ips" ] && ips="-"
+			cappend "$comments $macs $ips"
+			[ "$wrts" = "1" ] && wappend "$macs,$comments"
+		else
+			break
+		fi
+		total=$((total-1))
+	done
+}
+
+get_wrt_origin_conf()
+{
+	swap=""
+	echo -n "" > $TEMFILE
+	echo "" >> $WRTBWMON_USER
+	while read LINE
+	do
+	devcom_start=`echo "$LINE" | grep "devcom start"`
+	devcom_end=`echo "$LINE" | grep "devcom end"`
+
+	[ -n "$devcom_start" ] && swap="true"
+	[ "$swap" != "true" ] && echo $LINE >> $TEMFILE
+	[ -n "$devcom_end" ] && swap="false"
+
+	done  < $WRTBWMON_USER	
+}
+
+start(){
+	/etc/init.d/devcom enable
+	[ -f "$CONFIGFILE_COMMENTS" ] && rm $CONFIGFILE_COMMENTS 2>/dev/null
+	get_wrt_origin_conf
+	echo "-----------------devcom start--------------------" >> $TEMFILE
+	config_add_host host
+	echo "-----------------devcom end--------------------" >> $TEMFILE
+	cat $TEMFILE | tr -s '\n' > $WRTBWMON_USER
+}

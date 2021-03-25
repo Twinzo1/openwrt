@@ -8,7 +8,7 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=dogcom
-PKG_VERSION:=1.6.5
+PKG_VERSION:=2.0
 PKG_RELEASE:=3
 
 PKG_LICENSE:=AGPL-3.0
@@ -41,6 +41,22 @@ endef
 define Package/dogcom/install
 	$(INSTALL_DIR)  $(1)/usr/bin
 	$(INSTALL_BIN)  $(PKG_BUILD_DIR)/dogcom $(1)/usr/bin
+	$(INSTALL_DIR)  $(1)/etc/init.d
+	$(INSTALL_BIN)  ./files/etc/init.d/dogcom $(1)/etc/init.d
+	$(INSTALL_BIN)  ./files/etc/init.d/dogcom_log $(1)/etc/init.d
+	$(INSTALL_BIN)  ./files/etc/init.d/dogcom_proxy $(1)/etc/init.d
+	
+	$(INSTALL_DIR)   $(1)/etc/config
+	$(INSTALL_DATA)  ./files/etc/config/dogcom $(1)/etc/config
+	$(INSTALL_DATA)  ./files/etc/config/dogcom_proxy $(1)/etc/config
+	$(INSTALL_DIR)   $(1)/usr/lib/lua/luci/controller
+	$(INSTALL_DATA)  ./files/usr/lib/lua/luci/controller/dogcom.lua $(1)/usr/lib/lua/luci/controller
+	$(INSTALL_DIR)   $(1)/usr/lib/lua/luci/model/cbi/dogcom
+	$(INSTALL_DATA)  ./files/usr/lib/lua/luci/model/cbi/dogcom/dogcom.lua $(1)/usr/lib/lua/luci/model/cbi/dogcom
+	$(INSTALL_DATA)  ./files/usr/lib/lua/luci/model/cbi/dogcom/dogcom_proxy.lua $(1)/usr/lib/lua/luci/model/cbi/dogcom
+	$(INSTALL_DIR)   $(1)/usr/lib/lua/luci/view/dogcom
+	$(INSTALL_DATA)  ./files/usr/lib/lua/luci/view/dogcom/patch.htm $(1)/usr/lib/lua/luci/view/dogcom
+
 endef
 
 $(eval $(call BuildPackage,dogcom))
